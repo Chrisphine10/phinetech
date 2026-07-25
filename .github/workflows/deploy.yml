@@ -1,0 +1,75 @@
+name: Deploy
+
+# Deploys to the production VPS after CI passes on main.
+#
+# Security model: the SSH key held in secrets is a *restricted* key. The
+# server's authorized_keys entry pins it to a single command
+# (/var/www/phinetech/deploy.sh) and disables port forwarding, PTY and agent
+# forwarding. A leaked key therefore cannot open a shell — the worst it can do
+# is trigger a redeploy of whatever is already on main.
+#
+# Required repository secrets:
+#   DEPLOY_SSH_KEY     - private half of the restricted deploy key
+#   DEPLOY_HOST        - 78.159.126.22
+#   DEPLOY_USER        - phinetech
+#   DEPLOY_KNOWN_HOSTS - server host key, pins the target and prevents MITM
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two deploys at once, and never cancel one midway — a half-applied
+# deploy is worse than a queued one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # Only proceed when CI actually succeeded (or when run by hand).
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Trigger deployment
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+              -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=20 \
+              "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}"
+
+      - name: Verify site is serving
+        run: |
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' https://phinetech.co.ke/ --max-time 20 || echo 000)
+            echo "attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "Deployment verified."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Site did not return HTTP 200 after deploy."
+          exit 1
+
+      - name: Clean up key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

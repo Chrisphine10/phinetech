@@ -1,26 +1,241 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   PhineTech design tokens
+   --------------------------------------------------------------------------
+   Brand values are taken from the existing PhineTech identity:
+     - Purple  #5E0089  (site CSS custom property --fs-color-primary)
+     - Purple  #603090  (dominant colour sampled from the logo mark)
+     - Gold    #F0C000  (secondary colour sampled from the logo mark)
+     - Ink     #2C2C2C  (site CSS custom property --fs-color-secondary)
+     - Cyan    #00E0FF  (site CSS custom property --fs-color-success)
+
+   Two layers, deliberately:
+     1. PRIMITIVES  - raw brand ramps, never referenced directly in markup.
+     2. SEMANTIC    - role-based tokens (surface, border, primary, ...) that
+                      flip between light and dark. Components use only these,
+                      so re-theming never requires touching a component.
+
+   Accessibility note: gold (#F0C000) is a ~1.9:1 contrast against white and
+   must NOT be used for small body text on light surfaces. It is reserved for
+   accents, rules, icon glyphs, and text on dark/purple surfaces.
+   ========================================================================== */
+
+/* ------------------------------- primitives ------------------------------ */
+@theme {
+  /* Purple ramp, anchored on #5E0089 at 700 */
+  --color-brand-50: #faf5ff;
+  --color-brand-100: #f3e6fc;
+  --color-brand-200: #e6ccf8;
+  --color-brand-300: #d1a5f0;
+  --color-brand-400: #b06ee0;
+  --color-brand-500: #8f34c8;
+  --color-brand-600: #7314a8;
+  --color-brand-700: #5e0089;
+  --color-brand-800: #4a006d;
+  --color-brand-900: #360050;
+  --color-brand-950: #220033;
+
+  /* Gold ramp, anchored on #F0C000 at 500 */
+  --color-gold-50: #fffaeb;
+  --color-gold-100: #fff2c7;
+  --color-gold-200: #ffe488;
+  --color-gold-300: #ffd44a;
+  --color-gold-400: #ffc71f;
+  --color-gold-500: #f0c000;
+  --color-gold-600: #c99e00;
+  --color-gold-700: #a07c00;
+  --color-gold-800: #6b5200;
+  --color-gold-900: #443400;
+
+  /* Neutral ramp, warmed very slightly toward the brand hue */
+  --color-ink-50: #f8f6fb;
+  --color-ink-100: #f1eef6;
+  --color-ink-200: #e8e2f0;
+  --color-ink-300: #cfc6db;
+  --color-ink-400: #a99cba;
+  --color-ink-500: #7d7091;
+  --color-ink-600: #5f5470;
+  --color-ink-700: #443a52;
+  --color-ink-800: #2c2c2c;
+  --color-ink-900: #1c1226;
+  --color-ink-950: #120a1a;
+
+  /* Support */
+  --color-cyan-brand: #00e0ff;
+
+  /* Motion - one place to retune the whole system */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------- semantic: light ---------------------------- */
 :root {
+  color-scheme: light;
+
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1c1226;
+
+  --surface: #ffffff;
+  --surface-muted: #f8f6fb;
+  --surface-inverse: #220033;
+
+  --border: #e8e2f0;
+  --border-strong: #cfc6db;
+
+  --muted-foreground: #5f5470;
+
+  --primary: #5e0089;
+  --primary-hover: #4a006d;
+  --primary-foreground: #ffffff;
+  --primary-subtle: #f3e6fc;
+
+  --accent: #f0c000;
+  --accent-foreground: #2c2c2c;
+
+  --ring: #8f34c8;
+
+  --shadow-card: 0 1px 2px rgb(34 0 51 / 0.06), 0 8px 24px -12px rgb(34 0 51 / 0.18);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ----------------------------- semantic: dark ---------------------------- */
+/* Applied both by system preference and by an explicit data-theme opt-in.
+   The explicit attribute must win in BOTH directions, so the light override
+   below is intentional and must stay after the media query. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
+
+    --background: #120a1a;
+    --foreground: #ede7f4;
+
+    --surface: #1b1024;
+    --surface-muted: #241633;
+    --surface-inverse: #faf5ff;
+
+    --border: #33234a;
+    --border-strong: #4a3363;
+
+    --muted-foreground: #a99cba;
+
+    --primary: #b06ee0;
+    --primary-hover: #d1a5f0;
+    --primary-foreground: #1a0a24;
+    --primary-subtle: #2a1439;
+
+    --accent: #f0c000;
+    --accent-foreground: #1a0a24;
+
+    --ring: #b06ee0;
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
   }
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: #120a1a;
+  --foreground: #ede7f4;
+
+  --surface: #1b1024;
+  --surface-muted: #241633;
+  --surface-inverse: #faf5ff;
+
+  --border: #33234a;
+  --border-strong: #4a3363;
+
+  --muted-foreground: #a99cba;
+
+  --primary: #b06ee0;
+  --primary-hover: #d1a5f0;
+  --primary-foreground: #1a0a24;
+  --primary-subtle: #2a1439;
+
+  --accent: #f0c000;
+  --accent-foreground: #1a0a24;
+
+  --ring: #b06ee0;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --background: #ffffff;
+  --foreground: #1c1226;
+
+  --surface: #ffffff;
+  --surface-muted: #f8f6fb;
+  --surface-inverse: #220033;
+
+  --border: #e8e2f0;
+  --border-strong: #cfc6db;
+
+  --muted-foreground: #5f5470;
+
+  --primary: #5e0089;
+  --primary-hover: #4a006d;
+  --primary-foreground: #ffffff;
+  --primary-subtle: #f3e6fc;
+
+  --accent: #f0c000;
+  --accent-foreground: #2c2c2c;
+
+  --ring: #8f34c8;
+
+  --shadow-card: 0 1px 2px rgb(34 0 51 / 0.06), 0 8px 24px -12px rgb(34 0 51 / 0.18);
+}
+
+/* ------------- expose semantic tokens as Tailwind utilities --------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-border-subtle: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* --------------------------------- base ---------------------------------- */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Visible, on-brand focus ring for keyboard users only. */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Respect users who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
