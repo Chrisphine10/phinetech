@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Lato, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-// Lato matches the existing PhineTech brand typography.
-// Self-hosted by next/font, so no request reaches Google at runtime.
-const lato = Lato({
-  variable: "--font-lato",
+// Inter carries the Notion-like feel. Self-hosted by next/font, so no request
+// reaches Google at runtime.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
   display: "swap",
 });
 
@@ -22,17 +23,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name} — ${site.tagline}`,
-    template: `%s | ${site.name}`,
+    template: `%s · ${site.name}`,
   },
   description: site.description,
   applicationName: site.name,
   keywords: [
-    "POS systems Kenya",
-    "KRA eTIMS",
-    "ETR devices",
-    "IT equipment Nairobi",
-    "networking",
-    "printers",
+    "SACCO management system",
+    "VSLA digitisation",
+    "school management system Kenya",
+    "KRA eTIMS POS",
+    "software development Kenya",
     "PhineTech",
   ],
   openGraph: {
@@ -71,13 +71,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${lato.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <SiteHeader />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
