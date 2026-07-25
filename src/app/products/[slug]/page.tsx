@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import { ProductGlyph } from "@/components/product-glyph";
+import { ProductLogo } from "@/components/product-logo";
 import { products, getProduct, site } from "@/lib/site";
 
 // Next 15+ passes route params as a Promise — they must be awaited.
@@ -44,6 +45,7 @@ export default async function ProductPage({ params }: Props) {
         lead={product.summary}
       >
         <div className="flex flex-wrap items-center gap-2.5">
+          {product.logo && <ProductLogo product={product} height={40} />}
           <span className="rounded-[3px] border border-line px-2.5 py-1 text-xs text-muted-foreground">
             {product.status}
           </span>

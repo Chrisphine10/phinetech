@@ -2,7 +2,7 @@ import Link from "next/link";
 import { HeroScene } from "@/components/hero-scene";
 import { Reveal } from "@/components/reveal";
 import { StatCounter } from "@/components/stat-counter";
-import { ProductGlyph } from "@/components/product-glyph";
+import { ProductLogo } from "@/components/product-logo";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { PartnerLogo } from "@/components/partner-logo";
 import { Marquee } from "@/components/marquee";
@@ -118,9 +118,7 @@ export default function Home() {
                   href={`/products/${product.slug}`}
                   className="tilt group flex h-full flex-col rounded-[8px] border border-line bg-surface p-5 hover:border-line-strong"
                 >
-                  <div className="size-14 text-foreground opacity-80 transition-opacity group-hover:opacity-100">
-                    <ProductGlyph slug={product.slug} />
-                  </div>
+                  <ProductLogo product={product} height={44} />
                   <h3 className="mt-4 font-semibold tracking-tight">
                     {product.name}
                   </h3>

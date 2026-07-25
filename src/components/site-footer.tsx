@@ -60,6 +60,22 @@ export function SiteFooter() {
                   {site.contact.email}
                 </a>
               </li>
+              <li>
+                <a
+                  href={`tel:${site.contact.phoneTel}`}
+                  className="rounded-[3px] text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {site.contact.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${site.contact.phoneAltTel}`}
+                  className="rounded-[3px] text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {site.contact.phoneAlt}
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -19,11 +19,15 @@ export const site = {
   founded: "Nairobi, Kenya",
 
   contact: {
-    // TODO: replace with real details before launch.
+    // TODO: confirm these email addresses actually receive mail.
     email: "info@phinetech.co.ke",
     sales: "sales@phinetech.co.ke",
     support: "support@phinetech.co.ke",
-    phone: "+254 700 000 000",
+    // Displayed in local format; `tel:` uses E.164 so it dials from abroad.
+    phone: "0743 762 794",
+    phoneTel: "+254743762794",
+    phoneAlt: "0757 255 710",
+    phoneAltTel: "+254757255710",
     location: "Nairobi, Kenya",
   },
 } as const;
@@ -40,6 +44,11 @@ export type Product = {
   hrefLabel?: string;
   playStore?: boolean;
   status: "Live" | "In development";
+  /**
+   * Path under /public to the product's own logo. Omit and the animated
+   * ProductGlyph is used instead, so a missing asset never breaks a layout.
+   */
+  logo?: string;
   summary: string;
   description: string;
   audience: string;
@@ -55,6 +64,7 @@ export const products: Product[] = [
     href: "https://intellicash.africa",
     hrefLabel: "intellicash.africa",
     status: "Live",
+    logo: "/logos/intellicash.png",
     summary:
       "A core management system for savings and credit cooperatives — members, savings, loans and reporting in one ledger.",
     description:
@@ -99,6 +109,7 @@ export const products: Product[] = [
     href: "https://intellicash.co.ke",
     hrefLabel: "intellicash.co.ke",
     status: "Live",
+    logo: "/logos/intellicash.png",
     summary:
       "Digitisation for village savings and loan associations, with a mobile app built for how groups actually meet.",
     description:
@@ -229,6 +240,7 @@ export const products: Product[] = [
     hrefLabel: "hodi-admin.co.ke",
     playStore: true,
     status: "Live",
+    logo: "/logos/hodi.png",
     summary:
       "A support access and case management platform built for GVRC, with an Android app and an administrative back office.",
     description:

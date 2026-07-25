@@ -31,8 +31,14 @@ const channels = [
   {
     label: "Phone",
     value: site.contact.phone,
-    href: `tel:${site.contact.phone.replace(/\s/g, "")}`,
+    href: `tel:${site.contact.phoneTel}`,
     note: "Weekdays, working hours.",
+  },
+  {
+    label: "Alternative phone",
+    value: site.contact.phoneAlt,
+    href: `tel:${site.contact.phoneAltTel}`,
+    note: "If the first line is engaged.",
   },
 ];
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
-import { ProductGlyph } from "@/components/product-glyph";
+import { ProductLogo } from "@/components/product-logo";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { products } from "@/lib/site";
 
@@ -27,9 +27,7 @@ export default function ProductsPage() {
             <Reveal as="article" key={product.slug} delay={i * 80}>
               <div className="tilt group relative flex h-full flex-col rounded-[8px] border border-line bg-surface p-6 hover:border-line-strong">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="size-16 shrink-0 text-foreground opacity-85 transition-opacity group-hover:opacity-100">
-                    <ProductGlyph slug={product.slug} />
-                  </div>
+                  <ProductLogo product={product} height={48} />
                   <span className="shrink-0 rounded-[3px] border border-line px-2 py-0.5 text-xs text-muted-foreground">
                     {product.status}
                   </span>
