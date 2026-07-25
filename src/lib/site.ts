@@ -138,14 +138,14 @@ export const products: Product[] = [
     ],
   },
   {
-    slug: "classcompas",
-    name: "ClassCompas",
+    slug: "classcompass",
+    name: "ClassCompass",
     category: "Education",
     status: "Live",
     summary:
       "School management covering enrolment, fees, academics and parent communication in one place.",
     description:
-      "ClassCompas brings the administrative side of a school into one system — who is enrolled, what has been paid, how learners are performing, and what parents have been told. The aim is fewer parallel registers and less time spent assembling the same figures twice.",
+      "ClassCompass brings the administrative side of a school into one system — who is enrolled, what has been paid, how learners are performing, and what parents have been told. The aim is fewer parallel registers and less time spent assembling the same figures twice.",
     audience: "Primary and secondary schools, colleges and training institutions.",
     features: [
       {
@@ -277,24 +277,48 @@ export function getProduct(slug: string): Product | undefined {
 /* -------------------------------------------------------------------------- */
 
 export type Partner = {
+  slug: string;
   name: string;
+  fullName?: string;
+  /** Shown when no logo asset is present. Keep to 2-4 characters. */
+  monogram: string;
   relationship: string;
   body: string;
+  url?: string;
+  urlLabel?: string;
 };
 
+/**
+ * Logo assets: drop an official file at /public/logos/<slug>.svg (or .png) and
+ * PartnerLogo will use it automatically. Until then a monogram is rendered.
+ *
+ * Do NOT add third-party logos without written permission — these are other
+ * organisations' trademarks, not ours to publish.
+ */
 export const partners: Partner[] = [
   {
+    slug: "tari-africa",
     name: "Tari Africa",
+    monogram: "TA",
     relationship: "Development partner",
-    body: "PhineTech acts as development partner, building and maintaining software under a continuing engagement.",
+    body: "Tari Africa nurtures, funds and scales African startups, combining product development, venture capital and social impact. PhineTech provides engineering capacity under a continuing engagement.",
+    url: "https://tari.africa",
+    urlLabel: "tari.africa",
   },
   {
+    slug: "gvrc",
     name: "GVRC",
+    fullName: "Gender Violence Recovery Centre",
+    monogram: "GV",
     relationship: "Development partner",
-    body: "Developed Hodi, the support access platform and administrative back office, including the Android application.",
+    body: "GVRC is Kenya's pioneer organisation in gender-based violence management — a non-profit charitable trust. PhineTech developed Hodi, its support access platform, administrative back office and Android application.",
+    url: "https://gvrc.co.ke",
+    urlLabel: "gvrc.co.ke",
   },
   {
+    slug: "intelli-wealth",
     name: "Intelli-Wealth Limited",
+    monogram: "IW",
     relationship: "Development partner",
     body: "PhineTech acts as development partner, delivering and supporting software under a continuing engagement.",
   },
@@ -346,11 +370,29 @@ export const principles = [
   },
 ];
 
-export const stats = [
-  { value: "5", label: "Products in production" },
-  { value: "3", label: "Partner organisations" },
-  { value: "2", label: "Countries served" },
-  { value: "100%", label: "eTIMS compliant POS" },
+export const stats: { value: number; suffix?: string; label: string }[] = [
+  { value: 5, label: "Products in production" },
+  { value: 3, label: "Partner organisations" },
+  { value: 5, suffix: "+", label: "Sectors served" },
+  { value: 100, suffix: "%", label: "eTIMS compliant POS" },
+];
+
+/** Scrolling strip on the home page — the ground we cover. */
+export const domainStrip = [
+  "SACCO ledgers",
+  "VSLA share-out",
+  "KRA eTIMS",
+  "Mobile money reconciliation",
+  "Loan appraisal",
+  "Fee structures",
+  "Report cards",
+  "Android apps",
+  "Case management",
+  "Role-based access",
+  "Offline tolerance",
+  "Audit trails",
+  "Multi-branch retail",
+  "Dividend computation",
 ];
 
 /* -------------------------------------------------------------------------- */

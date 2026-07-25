@@ -76,6 +76,11 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* Scroll-reveal hides elements in CSS. Without JS nothing would ever
+            unhide them, so make everything visible when JS is unavailable. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
       </head>
       <body className="flex min-h-full flex-col">
         <SiteHeader />
