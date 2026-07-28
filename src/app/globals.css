@@ -1,39 +1,54 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   PhineTech design tokens — monochrome, Notion-inspired
+   PhineTech design tokens
    --------------------------------------------------------------------------
-   Brief: black and white, Notion-like. That means a strictly neutral palette,
-   generous whitespace, hairline rules instead of heavy borders, small radii,
-   and near-flat surfaces. Emphasis comes from type weight and spacing rather
-   than colour, so there is no accent hue anywhere in this file by design.
+   Palette sampled directly from the supplied logo artwork:
+     - Navy  #182432  the P body and wordmark text
+     - Red   #B12724  the dot above the wolf, and the accents in the tagline
+     - Moon  #FBFAF9  near-white
 
-   Structure:
-     1. PRIMITIVES — a single neutral ramp, never used directly in markup.
-     2. SEMANTIC   — role tokens (surface, border, primary, ...) that flip
-                     between light and dark. Components use only these.
+   The brand is navy and red on white, so the LIGHT theme is the primary
+   expression. Dark mode keeps the same hues on a deep navy ground.
+
+   Two layers:
+     1. PRIMITIVES — brand ramps, never referenced directly in markup.
+     2. SEMANTIC   — role tokens (surface, line, primary, accent) that flip
+                     between themes. Components use only these.
+
+   Accessibility: red #B12724 on white is ~6.4:1, fine for text. The lighter
+   dark-mode red (#E2564F) is used only on deep navy, where it clears 4.5:1.
    ========================================================================== */
 
 /* ------------------------------- primitives ------------------------------ */
 @theme {
-  /* Neutral ramp. Very slightly warm at the light end, matching Notion's
-     paper feel; strictly neutral at the dark end to stay true black-and-white. */
-  --color-neutral-0: #ffffff;
-  --color-neutral-25: #fbfbfa;
-  --color-neutral-50: #f7f7f5;
-  --color-neutral-100: #efefee;
-  --color-neutral-200: #e6e6e4;
-  --color-neutral-300: #d3d3d1;
-  --color-neutral-400: #b0b0ad;
-  --color-neutral-500: #8a8a87;
-  --color-neutral-600: #6b6b69;
-  --color-neutral-700: #454543;
-  --color-neutral-800: #2f2f2e;
-  --color-neutral-900: #202020;
-  --color-neutral-950: #191919;
-  --color-neutral-1000: #000000;
+  /* Navy ramp, anchored on the logo's #182432 at 900 */
+  --color-navy-50: #f4f6f8;
+  --color-navy-100: #e6eaef;
+  --color-navy-200: #c9d2dc;
+  --color-navy-300: #9dabbd;
+  --color-navy-400: #6b7e96;
+  --color-navy-500: #4a5c74;
+  --color-navy-600: #34455a;
+  --color-navy-700: #253447;
+  --color-navy-800: #1c2837;
+  --color-navy-900: #182432;
+  --color-navy-950: #0e1720;
 
-  /* Notion uses tight radii — 3px on inline elements, 8px on cards. */
+  /* Red ramp, anchored on the logo's #B12724 at 600 */
+  --color-brandred-50: #fdf3f2;
+  --color-brandred-100: #fbe2e0;
+  --color-brandred-200: #f6c3bf;
+  --color-brandred-300: #ee9691;
+  --color-brandred-400: #e2564f;
+  --color-brandred-500: #c93a32;
+  --color-brandred-600: #b12724;
+  --color-brandred-700: #8e1f1d;
+  --color-brandred-800: #6b1715;
+  --color-brandred-900: #47100f;
+
+  --color-moon: #fbfaf9;
+
   --radius-notion: 3px;
   --radius-card: 8px;
 
@@ -45,110 +60,145 @@
   color-scheme: light;
 
   --background: #ffffff;
-  --foreground: #191919;
+  --foreground: #182432;
 
   --surface: #ffffff;
-  --surface-muted: #f7f7f5;
-  --surface-hover: #efefee;
-  --surface-inverse: #191919;
+  --surface-muted: #f4f6f8;
+  --surface-hover: #e6eaef;
+  --surface-inverse: #182432;
   --foreground-inverse: #ffffff;
 
-  --border: #e6e6e4;
-  --border-strong: #d3d3d1;
+  --border: #dde3ea;
+  --border-strong: #c2ccd8;
 
-  --muted-foreground: #6b6b69;
-  --subtle-foreground: #8a8a87;
+  --muted-foreground: #4a5c74;
+  --subtle-foreground: #6b7e96;
 
-  --primary: #191919;
-  --primary-hover: #000000;
+  --primary: #182432;
+  --primary-hover: #0e1720;
   --primary-foreground: #ffffff;
 
-  --shadow-card: 0 1px 2px rgb(15 15 15 / 0.04), 0 2px 8px rgb(15 15 15 / 0.04);
-  --shadow-pop: 0 2px 4px rgb(15 15 15 / 0.06), 0 8px 24px rgb(15 15 15 / 0.09);
+  --accent: #b12724;
+  --accent-hover: #8e1f1d;
+  --accent-foreground: #ffffff;
+  --accent-subtle: #fbe2e0;
+
+  /* Plate behind the logo. Transparent in light — the page is already white. */
+  --logo-plate: transparent;
+  --logo-plate-ring: transparent;
+
+  --shadow-card: 0 1px 2px rgb(24 36 50 / 0.05), 0 2px 8px rgb(24 36 50 / 0.05);
+  --shadow-pop: 0 2px 4px rgb(24 36 50 / 0.08), 0 8px 24px rgb(24 36 50 / 0.12);
 }
 
 /* ----------------------------- semantic: dark ---------------------------- */
-/* Applied by system preference and by explicit opt-in. The explicit attribute
-   must win in both directions, so the light override below is intentional and
-   must stay after the media query. */
+/* The explicit data-theme opt-in must win in both directions, so the light
+   override below is intentional and must stay after the media query. */
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
 
-    --background: #191919;
-    --foreground: #ededec;
+    --background: #0e1720;
+    --foreground: #e6eaef;
 
-    --surface: #202020;
-    --surface-muted: #232323;
-    --surface-hover: #2f2f2e;
+    --surface: #152030;
+    --surface-muted: #182432;
+    --surface-hover: #1c2837;
     --surface-inverse: #ffffff;
-    --foreground-inverse: #191919;
+    --foreground-inverse: #182432;
 
-    --border: #313131;
-    --border-strong: #454543;
+    --border: #253447;
+    --border-strong: #34455a;
 
-    --muted-foreground: #9b9b98;
-    --subtle-foreground: #8a8a87;
+    --muted-foreground: #9dabbd;
+    --subtle-foreground: #6b7e96;
 
     --primary: #ffffff;
-    --primary-hover: #ededec;
-    --primary-foreground: #191919;
+    --primary-hover: #e6eaef;
+    --primary-foreground: #182432;
 
-    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 8px rgb(0 0 0 / 0.25);
-    --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.5);
+    --accent: #e2564f;
+    --accent-hover: #ee9691;
+    --accent-foreground: #0e1720;
+    --accent-subtle: #47100f;
+
+    /* The supplied logo exists only in its navy colourway, and its wolf is
+       fused to the P body so it cannot be safely recoloured. A light plate
+       keeps the artwork exact and legible on the dark ground. */
+    --logo-plate: #ffffff;
+    --logo-plate-ring: rgb(255 255 255 / 0.14);
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.3);
+    --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.55);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --background: #191919;
-  --foreground: #ededec;
+  --background: #0e1720;
+  --foreground: #e6eaef;
 
-  --surface: #202020;
-  --surface-muted: #232323;
-  --surface-hover: #2f2f2e;
+  --surface: #152030;
+  --surface-muted: #182432;
+  --surface-hover: #1c2837;
   --surface-inverse: #ffffff;
-  --foreground-inverse: #191919;
+  --foreground-inverse: #182432;
 
-  --border: #313131;
-  --border-strong: #454543;
+  --border: #253447;
+  --border-strong: #34455a;
 
-  --muted-foreground: #9b9b98;
-  --subtle-foreground: #8a8a87;
+  --muted-foreground: #9dabbd;
+  --subtle-foreground: #6b7e96;
 
   --primary: #ffffff;
-  --primary-hover: #ededec;
-  --primary-foreground: #191919;
+  --primary-hover: #e6eaef;
+  --primary-foreground: #182432;
 
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 8px rgb(0 0 0 / 0.25);
-  --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.5);
+  --accent: #e2564f;
+  --accent-hover: #ee9691;
+  --accent-foreground: #0e1720;
+  --accent-subtle: #47100f;
+
+  --logo-plate: #ffffff;
+  --logo-plate-ring: rgb(255 255 255 / 0.14);
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.3);
+  --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.55);
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
 
   --background: #ffffff;
-  --foreground: #191919;
+  --foreground: #182432;
 
   --surface: #ffffff;
-  --surface-muted: #f7f7f5;
-  --surface-hover: #efefee;
-  --surface-inverse: #191919;
+  --surface-muted: #f4f6f8;
+  --surface-hover: #e6eaef;
+  --surface-inverse: #182432;
   --foreground-inverse: #ffffff;
 
-  --border: #e6e6e4;
-  --border-strong: #d3d3d1;
+  --border: #dde3ea;
+  --border-strong: #c2ccd8;
 
-  --muted-foreground: #6b6b69;
-  --subtle-foreground: #8a8a87;
+  --muted-foreground: #4a5c74;
+  --subtle-foreground: #6b7e96;
 
-  --primary: #191919;
-  --primary-hover: #000000;
+  --primary: #182432;
+  --primary-hover: #0e1720;
   --primary-foreground: #ffffff;
 
-  --shadow-card: 0 1px 2px rgb(15 15 15 / 0.04), 0 2px 8px rgb(15 15 15 / 0.04);
-  --shadow-pop: 0 2px 4px rgb(15 15 15 / 0.06), 0 8px 24px rgb(15 15 15 / 0.09);
+  --accent: #b12724;
+  --accent-hover: #8e1f1d;
+  --accent-foreground: #ffffff;
+  --accent-subtle: #fbe2e0;
+
+  --logo-plate: transparent;
+  --logo-plate-ring: transparent;
+
+  --shadow-card: 0 1px 2px rgb(24 36 50 / 0.05), 0 2px 8px rgb(24 36 50 / 0.05);
+  --shadow-pop: 0 2px 4px rgb(24 36 50 / 0.08), 0 8px 24px rgb(24 36 50 / 0.12);
 }
 
 /* ------------- expose semantic tokens as Tailwind utilities --------------- */
@@ -167,6 +217,10 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-subtle: var(--accent-subtle);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
@@ -177,36 +231,41 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  /* Notion's slightly tightened body rhythm. */
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 :focus-visible {
-  outline: 2px solid var(--foreground);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: var(--radius-notion);
 }
 
 ::selection {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
-/* Notion-style hairline. Used for the document-like rules between sections. */
 .rule {
   border-top: 1px solid var(--border);
 }
 
+/* Plate that keeps the single-colourway logo legible on dark grounds. */
+/* background-color, not the `background` shorthand: the shorthand did not pick
+   up the custom property reliably here, while box-shadow on the same rule did.
+   The longhand resolves correctly in both themes. */
+.logo-plate {
+  background-color: var(--logo-plate);
+  box-shadow: 0 0 0 1px var(--logo-plate-ring);
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
 /* ==========================================================================
-   Motion and dimension
-   --------------------------------------------------------------------------
-   All of this is CSS-only and dependency-free — no Three.js, no animation
-   library. That keeps the bundle small and the site fully functional offline,
-   which the project requires. Every animation below is disabled wholesale by
-   the prefers-reduced-motion block at the end of this file.
+   Motion and dimension — CSS only, no 3D library, so the bundle stays small
+   and the site works offline. Everything here is switched off wholesale by
+   the prefers-reduced-motion block at the end of the file.
    ========================================================================== */
 
-/* --- scroll reveal (driven by IntersectionObserver in Reveal) --- */
 [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
@@ -220,7 +279,6 @@ body {
   transform: none;
 }
 
-/* --- 3D scaffolding --- */
 .scene-3d {
   perspective: 1100px;
   perspective-origin: 50% 45%;
@@ -229,7 +287,6 @@ body {
   transform-style: preserve-3d;
 }
 
-/* Card that tilts toward the pointer. Falls back to a flat hover elsewhere. */
 .tilt {
   transition: transform 0.4s var(--ease-brand), border-color 0.3s ease;
   transform-style: preserve-3d;
@@ -240,56 +297,55 @@ body {
   }
 }
 
-/* --- keyframes --- */
 @keyframes spin-y {
-  from { transform: rotateX(-22deg) rotateY(0deg); }
-  to   { transform: rotateX(-22deg) rotateY(360deg); }
+  from { transform: rotateX(-18deg) rotateY(0deg); }
+  to   { transform: rotateX(-18deg) rotateY(360deg); }
 }
-
+@keyframes spin-y-plain {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
 @keyframes float-y {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
-
 @keyframes draw {
   from { stroke-dashoffset: var(--draw-length, 1000); }
   to   { stroke-dashoffset: 0; }
 }
-
 @keyframes dash-flow {
   to { stroke-dashoffset: -1000; }
 }
-
 @keyframes pulse-node {
   0%, 100% { opacity: 0.25; r: 3; }
   50%      { opacity: 1; r: 4.5; }
 }
-
 @keyframes marquee-x {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-
 @keyframes grid-drift {
   from { background-position: 0 0; }
   to   { background-position: 56px 56px; }
 }
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(var(--orbit-r, 120px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r, 120px)) rotate(-360deg); }
+}
 
-/* --- animation utilities --- */
 .anim-spin-y   { animation: spin-y 26s linear infinite; }
+.anim-spin     { animation: spin-y-plain 30s linear infinite; }
 .anim-float    { animation: float-y 7s ease-in-out infinite; }
 .anim-dash     { animation: dash-flow 2.4s linear infinite; }
 .anim-marquee  { animation: marquee-x 38s linear infinite; }
 .anim-grid     { animation: grid-drift 22s linear infinite; }
+.anim-orbit    { animation: orbit var(--orbit-t, 18s) linear infinite; }
 
-/* Node pulse, staggered via inline --i so a diagram feels alive rather than
-   metronomic. */
 .anim-node {
   animation: pulse-node 3.2s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * 0.42s);
 }
 
-/* Stroke that draws itself once when revealed. */
 [data-reveal="shown"] .anim-draw {
   animation: draw 1.6s var(--ease-brand) forwards;
   animation-delay: calc(var(--i, 0) * 0.14s);
@@ -299,7 +355,6 @@ body {
   stroke-dashoffset: var(--draw-length, 1000);
 }
 
-/* Faint blueprint grid used behind hero and diagram sections. */
 .grid-bg {
   background-image:
     linear-gradient(to right, var(--border) 1px, transparent 1px),

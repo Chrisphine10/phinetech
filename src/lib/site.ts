@@ -13,7 +13,12 @@ export const site = {
   legalName: "PhineTech Ltd",
   domain: "phinetech.co.ke",
   url: "https://phinetech.co.ke",
-  tagline: "Software for cooperatives, schools and commerce",
+  /** The brand line from the logo lockup. */
+  tagline: "Vision it. We create it.",
+  /** What we actually do — used as the H1, where a descriptive line serves SEO better. */
+  descriptor: "Software for cooperatives, schools and commerce",
+  /** Sampled from the logo artwork. */
+  brand: { navy: "#182432", red: "#B12724" },
   description:
     "PhineTech builds and maintains financial, education and commerce software for African organisations — from SACCO core systems and VSLA digitisation to school management and eTIMS-compliant retail.",
   founded: "Nairobi, Kenya",

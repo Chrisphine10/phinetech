@@ -1,100 +1,121 @@
 /**
- * Rotating wireframe cube with orbiting nodes.
+ * Hero scene: the moon from the PhineTech mark, rendered in 3D.
  *
- * Built entirely from CSS 3D transforms — no Three.js, no canvas, no runtime
- * JS at all. It is a server component. Motion stops for reduced-motion users
- * via the global rule, leaving a static isometric object rather than nothing.
+ * Relevance over decoration — the logo is a wolf howling at a moon with a red
+ * dot beside it, so the scene reuses those exact elements: a lit lunar sphere,
+ * inclined orbit rings, and a red body (the brand's #B12724 dot) orbiting it.
+ *
+ * Pure CSS: layered radial gradients for the sphere and craters, 3D transforms
+ * for the rings. No Three.js, no canvas, no runtime JS — the whole thing is a
+ * server component and adds nothing to the JS bundle. Motion stops under
+ * prefers-reduced-motion, leaving a still moon rather than an empty box.
  */
 
-const FACES = [
-  { label: "front", transform: "translateZ(70px)" },
-  { label: "back", transform: "rotateY(180deg) translateZ(70px)" },
-  { label: "right", transform: "rotateY(90deg) translateZ(70px)" },
-  { label: "left", transform: "rotateY(-90deg) translateZ(70px)" },
-  { label: "top", transform: "rotateX(90deg) translateZ(70px)" },
-  { label: "bottom", transform: "rotateX(-90deg) translateZ(70px)" },
+const CRATERS = [
+  { top: "18%", left: "30%", size: 17, depth: 0.16 },
+  { top: "31%", left: "62%", size: 11, depth: 0.13 },
+  { top: "52%", left: "24%", size: 22, depth: 0.14 },
+  { top: "63%", left: "58%", size: 13, depth: 0.11 },
+  { top: "44%", left: "45%", size: 8, depth: 0.1 },
+  { top: "74%", left: "38%", size: 9, depth: 0.12 },
+  { top: "26%", left: "46%", size: 6, depth: 0.09 },
 ];
 
 export function HeroScene() {
   return (
     <div
       aria-hidden
-      className="scene-3d pointer-events-none relative grid h-[300px] w-full place-items-center select-none sm:h-[360px]"
+      className="scene-3d pointer-events-none relative grid h-[300px] w-full place-items-center select-none sm:h-[380px]"
     >
-      {/* orbit rings */}
-      <div className="absolute inset-0 grid place-items-center">
-        <div
-          className="anim-float rounded-full border border-line"
-          style={{
-            width: 250,
-            height: 250,
-            transform: "rotateX(74deg)",
-            animationDuration: "9s",
-          }}
-        />
-      </div>
-      <div className="absolute inset-0 grid place-items-center">
-        <div
-          className="anim-float rounded-full border border-line"
-          style={{
-            width: 320,
-            height: 320,
-            transform: "rotateX(74deg) rotateZ(30deg)",
-            animationDuration: "11s",
-            animationDelay: "-3s",
-          }}
-        />
-      </div>
+      {/* ---- inclined orbit rings ---- */}
+      {[
+        { size: 260, tilt: 74, spin: 0, delay: "0s" },
+        { size: 330, tilt: 74, spin: 32, delay: "-4s" },
+        { size: 400, tilt: 78, spin: -22, delay: "-8s" },
+      ].map((ring) => (
+        <div key={ring.size} className="absolute inset-0 grid place-items-center">
+          <div
+            className="anim-float rounded-full border border-line"
+            style={{
+              width: ring.size,
+              height: ring.size,
+              transform: `rotateX(${ring.tilt}deg) rotateZ(${ring.spin}deg)`,
+              animationDuration: "11s",
+              animationDelay: ring.delay,
+              opacity: 0.75,
+            }}
+          />
+        </div>
+      ))}
 
-      {/* the cube */}
-      <div className="anim-float" style={{ animationDuration: "8s" }}>
+      {/* ---- the moon ---- */}
+      <div className="anim-float relative" style={{ animationDuration: "9s" }}>
         <div
-          className="preserve-3d anim-spin-y relative"
-          style={{ width: 140, height: 140 }}
+          className="relative rounded-full"
+          style={{
+            width: 172,
+            height: 172,
+            // Lit from the upper left, matching the logo's moon.
+            background:
+              "radial-gradient(circle at 34% 30%, #ffffff 0%, #efefec 34%, #cfd0cd 62%, #a9abaa 82%, #85888a 100%)",
+            boxShadow:
+              "inset -14px -12px 34px rgb(24 36 50 / 0.34), 0 0 46px rgb(230 234 239 / 0.22)",
+          }}
         >
-          {FACES.map((face) => (
-            <div
-              key={face.label}
-              className="absolute inset-0 border border-line-strong"
-              style={{
-                transform: face.transform,
-                background:
-                  "color-mix(in srgb, var(--foreground) 3%, transparent)",
-                backdropFilter: "blur(1px)",
-              }}
-            >
-              {/* inner cross-hatch so faces read as engineered panels */}
-              <div
-                className="absolute inset-2 opacity-40"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
-                  backgroundSize: "23px 23px",
-                }}
-              />
-            </div>
-          ))}
-
-          {/* vertex nodes, sitting on the cube corners */}
-          {[
-            [70, 70, 70],
-            [-70, 70, 70],
-            [70, -70, 70],
-            [-70, -70, 70],
-            [70, 70, -70],
-            [-70, 70, -70],
-            [70, -70, -70],
-            [-70, -70, -70],
-          ].map(([x, y, z], i) => (
+          {CRATERS.map((c, i) => (
             <span
               key={i}
-              className="absolute top-1/2 left-1/2 block size-1.5 rounded-full bg-foreground"
+              className="absolute rounded-full"
               style={{
-                transform: `translate3d(${x - 3}px, ${y - 3}px, ${z}px)`,
-                opacity: 0.55,
+                top: c.top,
+                left: c.left,
+                width: `${c.size}%`,
+                height: `${c.size}%`,
+                background: `radial-gradient(circle at 38% 34%, rgb(24 36 50 / ${c.depth}) 0%, rgb(24 36 50 / ${c.depth * 0.5}) 55%, transparent 72%)`,
               }}
             />
           ))}
+        </div>
+      </div>
+
+      {/* ---- the brand's red body, orbiting ---- */}
+      <div className="absolute inset-0 grid place-items-center">
+        <div
+          className="anim-orbit"
+          style={
+            {
+              "--orbit-r": "148px",
+              "--orbit-t": "17s",
+            } as React.CSSProperties
+          }
+        >
+          <span
+            className="block rounded-full"
+            style={{
+              width: 17,
+              height: 17,
+              background: "var(--accent)",
+              boxShadow: "0 0 18px color-mix(in srgb, var(--accent) 55%, transparent)",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* ---- a second, smaller body on a wider, slower orbit ---- */}
+      <div className="absolute inset-0 grid place-items-center">
+        <div
+          className="anim-orbit"
+          style={
+            {
+              "--orbit-r": "196px",
+              "--orbit-t": "29s",
+            } as React.CSSProperties
+          }
+        >
+          <span
+            className="block size-2 rounded-full bg-foreground"
+            style={{ opacity: 0.45 }}
+          />
         </div>
       </div>
     </div>

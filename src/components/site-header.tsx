@@ -16,13 +16,14 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-5">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-5">
         <Link
           href="/"
+          aria-label="PhineTech — home"
           className="rounded-[3px] text-foreground"
           onClick={() => setOpen(false)}
         >
-          <BrandMark />
+          <BrandMark height={30} />
         </Link>
 
         {/* desktop nav */}

@@ -1,51 +1,52 @@
+import Image from "next/image";
+
 /**
- * PhineTech wordmark.
+ * PhineTech logo lockup.
  *
- * Monochrome by design — it inherits `currentColor`, so it works on any
- * surface and inverts correctly with the theme without a second asset.
+ * `variant="wordmark"` — the full "Phine Tech / Vision it. We create it."
+ * lockup, used in the header and footer.
+ * `variant="mark"` — the square P, for tight square spaces.
  *
- * Placeholder: typographic stand-in, not official logo artwork. Drop the real
- * asset into /public and swap this component when it exists.
+ * Dark mode: the supplied artwork exists only in its navy colourway, and the
+ * wolf is fused to the P body as a single shape, so it cannot be recoloured
+ * automatically without erasing the wolf. Instead the logo sits on a light
+ * plate (see --logo-plate), which keeps the artwork exactly as designed and
+ * legible on the dark ground. The plate is transparent in light mode, where
+ * the page is already white.
  */
 export function BrandMark({
+  variant = "wordmark",
+  height = 32,
   className = "",
-  showText = true,
 }: {
+  variant?: "wordmark" | "mark";
+  height?: number;
   className?: string;
-  showText?: boolean;
 }) {
+  const isWordmark = variant === "wordmark";
+
+  // Intrinsic sizes after cropping to content.
+  const src = isWordmark
+    ? "/logos/phinetech-wordmark.png"
+    : "/logos/phinetech-mark.png";
+  const intrinsic = isWordmark ? { w: 1660, h: 547 } : { w: 733, h: 944 };
+  const width = Math.round((intrinsic.w / intrinsic.h) * height);
+
   return (
-    <span className={`inline-flex items-center gap-2 ${className}`}>
-      <svg
-        viewBox="0 0 24 24"
-        className="size-6 shrink-0"
-        role="img"
-        aria-label="PhineTech"
-      >
-        <rect
-          x="0.75"
-          y="0.75"
-          width="22.5"
-          height="22.5"
-          rx="5.25"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <path
-          d="M8.5 17.5v-11h4.25a3.25 3.25 0 0 1 0 6.5H8.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.9"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      {showText && (
-        <span className="text-[15px] font-semibold tracking-tight">
-          PhineTech
-        </span>
-      )}
+    <span
+      className={`logo-plate inline-flex items-center justify-center ${className}`}
+      style={{ padding: Math.round(height * 0.14) }}
+    >
+      <Image
+        src={src}
+        alt="Phine Tech — Vision it. We create it."
+        width={intrinsic.w}
+        height={intrinsic.h}
+        style={{ height, width }}
+        className="object-contain"
+        priority
+        unoptimized
+      />
     </span>
   );
 }

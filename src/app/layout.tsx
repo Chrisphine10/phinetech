@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -49,6 +49,15 @@ export const metadata: Metadata = {
     description: site.description,
   },
   robots: { index: true, follow: true },
+};
+
+// Tints browser chrome to match the brand. Must be a separate `viewport`
+// export — Next no longer accepts themeColor inside `metadata`.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1720" },
+  ],
 };
 
 // Applies the stored theme before first paint so there is no light/dark flash.

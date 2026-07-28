@@ -10,7 +10,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-5xl px-5 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <BrandMark className="text-foreground" />
+            <BrandMark height={38} />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {site.description}
             </p>

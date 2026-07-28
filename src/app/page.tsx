@@ -35,12 +35,19 @@ export default function Home() {
 
             <Reveal delay={80}>
               <h1 className="mt-4 max-w-2xl text-4xl leading-[1.06] font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-                {site.tagline}
+                {site.descriptor}
               </h1>
             </Reveal>
 
-            <Reveal delay={160}>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-pretty text-muted-foreground">
+            <Reveal delay={140}>
+              {/* The brand line from the logo lockup. */}
+              <p className="mt-5 text-lg font-semibold tracking-tight text-accent">
+                {site.tagline}
+              </p>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-pretty text-muted-foreground">
                 {site.description}
               </p>
             </Reveal>
@@ -49,7 +56,7 @@ export default function Home() {
               <div className="mt-9 flex flex-wrap gap-2.5">
                 <Link
                   href="/products"
-                  className="rounded-[3px] bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+                  className="rounded-[3px] bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
                 >
                   Explore products
                 </Link>
