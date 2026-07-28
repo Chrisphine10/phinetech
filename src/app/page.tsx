@@ -6,8 +6,10 @@ import { ProductLogo } from "@/components/product-logo";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
 import { PartnerLogo } from "@/components/partner-logo";
 import { Marquee } from "@/components/marquee";
+import { ServiceIcon } from "@/components/service-icon";
 import {
   site,
+  services,
   products,
   partners,
   stats,
@@ -93,6 +95,53 @@ export default function Home() {
             </Reveal>
           ))}
         </dl>
+      </section>
+
+      {/* ------------------------------- services ------------------------------ */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  What we do
+                </h2>
+                <p className="mt-3 max-w-xl text-muted-foreground text-pretty">
+                  Six service lines, offered to the organisations we build
+                  products for and to partners who need the capability without
+                  hiring a full team.
+                </p>
+              </div>
+              <Link
+                href="/services"
+                className="rounded-[3px] text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                All services →
+              </Link>
+            </div>
+          </Reveal>
+
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((service, i) => (
+              <Reveal as="li" key={service.slug} delay={i * 60}>
+                <Link
+                  href={`/services#${service.slug}`}
+                  className="tilt group flex h-full flex-col rounded-[8px] border border-line bg-surface p-5 hover:border-line-strong"
+                >
+                  <span className="size-9 text-accent">
+                    <ServiceIcon slug={service.slug} />
+                  </span>
+                  <h3 className="mt-4 font-semibold tracking-tight">
+                    {service.title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                    {service.summary}
+                  </p>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* ------------------------------- products ------------------------------ */}

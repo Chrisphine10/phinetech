@@ -16,11 +16,11 @@ export const site = {
   /** The brand line from the logo lockup. */
   tagline: "Vision it. We create it.",
   /** What we actually do — used as the H1, where a descriptive line serves SEO better. */
-  descriptor: "Software for cooperatives, schools and commerce",
+  descriptor: "AI automation, software engineering and secure cloud",
   /** Sampled from the logo artwork. */
   brand: { navy: "#182432", red: "#B12724" },
   description:
-    "PhineTech builds and maintains financial, education and commerce software for African organisations — from SACCO core systems and VSLA digitisation to school management and eTIMS-compliant retail.",
+    "PhineTech is a technology partner to organisations in Africa and beyond. We build AI automation, custom software, cloud and cyber security capability — backed by our own products, a dedicated technical and administrative team, and support with fundraising and financial linkages.",
   founded: "Nairobi, Kenya",
 
   contact: {
@@ -36,6 +36,120 @@ export const site = {
     location: "Nairobi, Kenya",
   },
 } as const;
+
+/* -------------------------------------------------------------------------- */
+/*                                  services                                  */
+/* -------------------------------------------------------------------------- */
+
+export type Service = {
+  slug: string;
+  title: string;
+  summary: string;
+  detail: string;
+  points: string[];
+};
+
+export const services: Service[] = [
+  {
+    slug: "ai-automation",
+    title: "AI automation",
+    summary:
+      "Put AI where it removes real work — not where it demonstrates well.",
+    detail:
+      "We start from the processes that actually consume your team's hours: document handling, reconciliation, triage, routine reporting. Then we automate them with models measured against your own data, not a benchmark, and keep a human in the loop wherever being wrong would be expensive.",
+    points: [
+      "Process discovery and scoping",
+      "Document and data extraction",
+      "Workflow and decision automation",
+      "Evaluation against your own data",
+      "Human-in-the-loop review",
+      "Integration with the systems you already run",
+    ],
+  },
+  {
+    slug: "software-development",
+    title: "Software development",
+    summary:
+      "Systems built to be maintained for years, not demonstrated once.",
+    detail:
+      "Web and mobile applications, APIs, integrations and the unglamorous work underneath them — schema design, migrations, tests. We build for the conditions our clients operate in: modest hardware, intermittent connectivity, and regulation that is local and specific.",
+    points: [
+      "Web and mobile applications",
+      "APIs and systems integration",
+      "Legacy modernisation",
+      "Database and schema design",
+      "Automated testing",
+      "Long-term maintenance",
+    ],
+  },
+  {
+    slug: "innovation-support",
+    title: "Innovation support",
+    summary:
+      "Getting from an idea to something that survives contact with users.",
+    detail:
+      "Most ideas fail on a detail nobody examined early enough. We help frame the problem, prototype the risky part first, and design a pilot that produces evidence rather than enthusiasm — then hand over the capability rather than the dependency.",
+    points: [
+      "Problem framing and discovery",
+      "Rapid prototyping",
+      "Technical feasibility assessment",
+      "Pilot design and measurement",
+      "Product roadmapping",
+      "Building your team's capability",
+    ],
+  },
+  {
+    slug: "cloud-computing",
+    title: "Cloud computing",
+    summary:
+      "Infrastructure that scales with demand and degrades gracefully when the network does not.",
+    detail:
+      "Architecture, migration and the operational discipline that keeps a system running: deployment pipelines, monitoring that alerts on the right things, backups someone has actually restored from. Sized honestly, so you are not paying for capacity you never use.",
+    points: [
+      "Architecture and cloud migration",
+      "Deployment pipelines (CI/CD)",
+      "Monitoring and alerting",
+      "Backup and disaster recovery",
+      "Cost optimisation",
+      "Offline-tolerant design",
+    ],
+  },
+  {
+    slug: "cyber-security",
+    title: "Cyber security",
+    summary: "Security treated as a design input, not an audit finding.",
+    detail:
+      "Access control, data protection and secure development practice built in from the start — because retrofitting security after a system is live costs more and works less well. Particularly where the data is sensitive and the consequences of a breach are borne by people, not balance sheets.",
+    points: [
+      "Security review and assessment",
+      "Identity and access control",
+      "Data protection and encryption",
+      "Secure development practice",
+      "Incident response planning",
+      "Compliance support",
+    ],
+  },
+  {
+    slug: "fundraising",
+    title: "Fundraising & financial linkages",
+    summary:
+      "Connecting partners to the capital and financial infrastructure they need to grow.",
+    detail:
+      "Good technology does not fund itself. We help partners get funding-ready, support proposals and grant applications, and make the introductions and financial connections that turn a working system into a sustainable one.",
+    points: [
+      "Funding readiness assessment",
+      "Proposal and grant support",
+      "Investor and donor linkages",
+      "Financial systems integration",
+      "Reporting and accountability",
+      "Due diligence support",
+    ],
+  },
+];
+
+export function getService(slug: string): Service | undefined {
+  return services.find((s) => s.slug === slug);
+}
 
 /* -------------------------------------------------------------------------- */
 /*                                  products                                  */
@@ -306,6 +420,8 @@ export type Partner = {
   body: string;
   url?: string;
   urlLabel?: string;
+  /** Where the partner is based, shown when it is outside Kenya. */
+  location?: string;
 };
 
 /**
@@ -345,36 +461,35 @@ export const partners: Partner[] = [
     relationship: "Development partner",
     body: "PhineTech acts as development partner, delivering and supporting software under a continuing engagement.",
   },
+  {
+    slug: "trubai",
+    name: "TrubAI",
+    // Not "TA" — that is Tari Africa's monogram and the two would be
+    // indistinguishable in the partner list.
+    monogram: "TR",
+    relationship: "Technology consulting partner",
+    location: "New York City, USA",
+    body: "TrubAI is a behavioural, AI-enabled urban planning and transportation data platform. It analyses both qualitative and quantitative data to identify not just what movement patterns occur in a city but why — giving planners what they need to address congestion systemically, rather than symptom by symptom. The technology has been implemented in partnership with the New York City government. PhineTech consults on the engagement.",
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
 /*                                  company                                   */
 /* -------------------------------------------------------------------------- */
 
-export const capabilities = [
+/** How the organisation is set up to work with partners. */
+export const team = [
   {
-    title: "Product engineering",
-    body: "Long-lived systems built to be maintained — not prototypes handed over and abandoned.",
+    title: "Technical team",
+    body: "Engineers who stay with a system past launch — building, integrating and maintaining it, and available to the partner directly rather than through a ticket queue.",
   },
   {
-    title: "Financial systems",
-    body: "Ledgers, loans and reconciliation, where correctness is not negotiable and the audit trail matters.",
+    title: "Administrative team",
+    body: "Dedicated coordination alongside the engineering: reporting, documentation, scheduling and the day-to-day contact that keeps a long engagement running smoothly.",
   },
   {
-    title: "Mobile applications",
-    body: "Android applications designed for real conditions: modest devices and unreliable connectivity.",
-  },
-  {
-    title: "Compliance integration",
-    body: "KRA eTIMS and payment provider integration handled as part of the workflow, not an afterthought.",
-  },
-  {
-    title: "Partner engagements",
-    body: "Acting as the development arm for organisations that need engineering capacity without hiring a full team.",
-  },
-  {
-    title: "Support and maintenance",
-    body: "Systems kept running after launch, with the people who built them still answering the phone.",
+    title: "Embedded, not outsourced",
+    body: "We work closely enough with partners to learn their domain properly. That is what lets us build for a SACCO's rules or a city's traffic data rather than a generic case.",
   },
 ];
 
@@ -394,28 +509,32 @@ export const principles = [
 ];
 
 export const stats: { value: number; suffix?: string; label: string }[] = [
+  { value: 6, label: "Service lines" },
   { value: 5, label: "Products in production" },
-  { value: 3, label: "Partner organisations" },
-  { value: 5, suffix: "+", label: "Sectors served" },
-  { value: 100, suffix: "%", label: "eTIMS compliant POS" },
+  { value: 4, label: "Partner organisations" },
+  { value: 2, label: "Continents served" },
 ];
 
 /** Scrolling strip on the home page — the ground we cover. */
 export const domainStrip = [
+  "AI automation",
+  "Document extraction",
   "SACCO ledgers",
-  "VSLA share-out",
+  "Cloud migration",
   "KRA eTIMS",
+  "Penetration testing",
+  "VSLA share-out",
+  "CI/CD pipelines",
   "Mobile money reconciliation",
-  "Loan appraisal",
-  "Fee structures",
-  "Report cards",
+  "Identity & access control",
   "Android apps",
-  "Case management",
-  "Role-based access",
+  "Urban mobility data",
   "Offline tolerance",
+  "Grant applications",
   "Audit trails",
-  "Multi-branch retail",
-  "Dividend computation",
+  "Disaster recovery",
+  "Case management",
+  "Investor linkages",
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -423,6 +542,7 @@ export const domainStrip = [
 /* -------------------------------------------------------------------------- */
 
 export const nav = [
+  { href: "/services", label: "Services" },
   { href: "/products", label: "Products" },
   { href: "/partners", label: "Partners" },
   { href: "/about", label: "About" },

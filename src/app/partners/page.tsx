@@ -9,7 +9,7 @@ import { partners, products } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Partners",
   description:
-    "PhineTech is development partner to Tari Africa, GVRC and Intelli-Wealth Limited — providing engineering capacity under continuing engagements.",
+    "PhineTech partners with Tari Africa, GVRC, Intelli-Wealth Limited and TrubAI in New York — providing engineering capacity under continuing engagements.",
 };
 
 export default function PartnersPage() {
@@ -20,7 +20,7 @@ export default function PartnersPage() {
       <PageHeader
         eyebrow="Partners"
         title="Organisations we build alongside"
-        lead="A development partnership is different from a project. It means being the engineering team an organisation does not have to hire — through delivery, and through the years of maintenance that follow."
+        lead="A partnership is different from a project. It means being the engineering team an organisation does not have to hire — through delivery, and through the years of maintenance that follow. Our work runs from Nairobi to New York."
       />
 
       <div className="mx-auto max-w-5xl px-5 py-14">
@@ -42,6 +42,11 @@ export default function PartnersPage() {
                   <p className="mt-1.5 text-xs tracking-wider text-subtle-foreground uppercase">
                     {partner.relationship}
                   </p>
+                  {partner.location && (
+                    <p className="mt-1.5 inline-block rounded-[3px] border border-line px-2 py-0.5 text-xs text-muted-foreground">
+                      {partner.location}
+                    </p>
+                  )}
                   {partner.url && (
                     <a
                       href={partner.url}
