@@ -158,6 +158,7 @@ export const products: Product[] = [
     name: "ClassCompass",
     category: "Education",
     status: "Live",
+    logo: "/logos/classcompass.png",
     summary:
       "School management covering enrolment, fees, academics and parent communication in one place.",
     description:
@@ -297,6 +298,8 @@ export type Partner = {
   slug: string;
   name: string;
   fullName?: string;
+  /** Path under /public. Omit and the monogram below is rendered instead. */
+  logo?: string;
   /** Shown when no logo asset is present. Keep to 2-4 characters. */
   monogram: string;
   relationship: string;
@@ -316,6 +319,7 @@ export const partners: Partner[] = [
   {
     slug: "tari-africa",
     name: "Tari Africa",
+    logo: "/logos/tari-africa.png",
     monogram: "TA",
     relationship: "Development partner",
     body: "Tari Africa nurtures, funds and scales African startups, combining product development, venture capital and social impact. PhineTech provides engineering capacity under a continuing engagement.",
@@ -326,6 +330,7 @@ export const partners: Partner[] = [
     slug: "gvrc",
     name: "GVRC",
     fullName: "Gender Violence Recovery Centre",
+    logo: "/logos/gvrc.png",
     monogram: "GV",
     relationship: "Development partner",
     body: "GVRC is Kenya's pioneer organisation in gender-based violence management — a non-profit charitable trust. PhineTech developed Hodi, its support access platform, administrative back office and Android application.",
@@ -335,6 +340,7 @@ export const partners: Partner[] = [
   {
     slug: "intelli-wealth",
     name: "Intelli-Wealth Limited",
+    logo: "/logos/intelli-wealth.png",
     monogram: "IW",
     relationship: "Development partner",
     body: "PhineTech acts as development partner, delivering and supporting software under a continuing engagement.",

@@ -1,22 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import { LogoTile } from "@/components/logo-tile";
 import type { Partner } from "@/lib/site";
 
 /**
  * Partner identity mark.
  *
- * Looks for an official asset at /public/logos/<slug>.svg. If it is absent (or
- * fails to load) a designed monogram is rendered instead, so the layout is
- * never broken by a missing file and the page looks finished today.
+ * Renders the partner's own logo in the shared uniform tile, falling back to a
+ * designed monogram when no asset is present — so the layout never breaks on a
+ * missing file and a partner without artwork still looks deliberate.
  *
- * Deliberately NOT shipping scraped third-party logos: these are other
- * organisations' trademarks. Drop official assets in with permission and they
- * appear automatically — no code change needed.
- *
- * Logos render in a neutral treatment to sit inside the monochrome system;
- * remove `grayscale` below if a partner requires full-colour reproduction.
+ * Logos are reproduced in full colour and unaltered: they are other
+ * organisations' trademarks, not ours to restyle.
  */
 export function PartnerLogo({
   partner,
@@ -25,30 +20,24 @@ export function PartnerLogo({
   partner: Partner;
   size?: number;
 }) {
-  const [failed, setFailed] = useState(false);
-
-  if (failed) {
-    return (
-      <span
-        aria-hidden
-        className="grid shrink-0 place-items-center rounded-[8px] border border-line bg-surface font-semibold tracking-tight"
-        style={{ width: size, height: size, fontSize: size * 0.3 }}
-      >
-        {partner.monogram}
-      </span>
-    );
-  }
-
   return (
-    <Image
-      src={`/logos/${partner.slug}.svg`}
+    <LogoTile
+      src={partner.logo}
       alt={`${partner.fullName ?? partner.name} logo`}
-      width={size}
       height={size}
-      onError={() => setFailed(true)}
-      className="shrink-0 rounded-[8px] object-contain grayscale"
-      style={{ width: size, height: size }}
-      unoptimized
+      fallback={
+        <span
+          aria-hidden
+          className="grid shrink-0 place-items-center rounded-[8px] border border-line bg-surface font-semibold tracking-tight"
+          style={{
+            width: Math.round(size * 2.6),
+            height: size,
+            fontSize: size * 0.34,
+          }}
+        >
+          {partner.monogram}
+        </span>
+      }
     />
   );
 }

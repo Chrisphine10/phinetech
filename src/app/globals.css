@@ -260,6 +260,30 @@ body {
   transition: background-color 0.2s ease;
 }
 
+/* Third-party logo tile.
+   Always white, in both themes and on purpose. The supplied marks use black
+   (ClassCompass), navy (IntelliCash) and dark green (GVRC) ink, all of which
+   disappear on the dark ground, and none can be recoloured without altering
+   someone else's trademark. A constant white tile guarantees every logo is
+   legible everywhere and reproduces each brand exactly as its owner drew it.
+
+   It also does the tidying: identical tiles give a row of logos one shared
+   silhouette even though the artwork inside ranges from 0.75:1 to 5:1. */
+.logo-tile {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px var(--border);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.logo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* ==========================================================================
    Motion and dimension — CSS only, no 3D library, so the bundle stays small
    and the site works offline. Everything here is switched off wholesale by
