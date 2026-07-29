@@ -324,14 +324,10 @@ export const products: Product[] = [
     name: "PhineTech POS",
     category: "Retail and commerce",
     status: "Live",
-    // TODO: artwork outstanding. Once the circuit-P mark is processed onto the
-    // shared 780x300 canvas, add:
-    //     logo: "/logos/phine-pos.png",
-    //     logoGround: "dark",
-    // It is light circuitry on a near-black field, so it needs the dark tile —
-    // the white default would swallow it. Until then the animated ProductGlyph
-    // stands in, which is why no `logo` is set: pointing at a missing file
-    // would 404 on every page load.
+    logo: "/logos/phine-pos.png",
+    // Light cream artwork on a dark field, unlike every other mark we hold.
+    // On a white tile it is very nearly invisible — verified by compositing.
+    logoGround: "dark",
     summary:
       "Point of sale with KRA eTIMS compliance and payment integrations built in, not bolted on.",
     description:
