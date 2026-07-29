@@ -25,6 +25,7 @@ export function PartnerLogo({
       src={partner.logo}
       alt={`${partner.fullName ?? partner.name} logo`}
       height={size}
+      ground={partner.logoGround}
       fallback={
         <span
           aria-hidden

@@ -284,6 +284,14 @@ body {
   object-fit: contain;
 }
 
+/* For artwork drawn as light ink on a dark field — the inverse of everything
+   else we hold. Uses the brand navy rather than pure black so it reads as part
+   of the system rather than a hole in the page. */
+.logo-tile--dark {
+  background-color: var(--color-navy-950);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
 /* ==========================================================================
    Motion and dimension — CSS only, no 3D library, so the bundle stays small
    and the site works offline. Everything here is switched off wholesale by

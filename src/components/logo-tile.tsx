@@ -26,12 +26,19 @@ export function LogoTile({
   src,
   alt,
   height = 48,
+  ground = "light",
   className = "",
   fallback = null,
 }: {
   src?: string;
   alt: string;
   height?: number;
+  /**
+   * Which ground the artwork was drawn for. Almost every mark we hold is dark
+   * ink on white, hence the white tile default. Light artwork on a dark field
+   * (the Phine POS mark) needs the inverse or it disappears.
+   */
+  ground?: "light" | "dark";
   className?: string;
   fallback?: React.ReactNode;
 }) {
@@ -41,7 +48,7 @@ export function LogoTile({
 
   return (
     <span
-      className={`logo-tile ${className}`}
+      className={`logo-tile ${ground === "dark" ? "logo-tile--dark" : ""} ${className}`}
       style={{
         height,
         width: Math.round(height * ASPECT),

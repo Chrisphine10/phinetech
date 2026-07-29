@@ -168,6 +168,15 @@ export type Product = {
    * ProductGlyph is used instead, so a missing asset never breaks a layout.
    */
   logo?: string;
+  /**
+   * Which ground the artwork is drawn for.
+   *
+   * Nearly every mark we hold is dark ink on white, which is why logo tiles
+   * are white by default. The Phine POS mark is the inverse — light circuitry
+   * on a near-black field — and would be invisible on a white tile. Marking it
+   * "dark" tells LogoTile to give it a dark tile instead.
+   */
+  logoGround?: "light" | "dark";
   summary: string;
   description: string;
   audience: string;
@@ -315,6 +324,14 @@ export const products: Product[] = [
     name: "PhineTech POS",
     category: "Retail and commerce",
     status: "Live",
+    // TODO: artwork outstanding. Once the circuit-P mark is processed onto the
+    // shared 780x300 canvas, add:
+    //     logo: "/logos/phine-pos.png",
+    //     logoGround: "dark",
+    // It is light circuitry on a near-black field, so it needs the dark tile —
+    // the white default would swallow it. Until then the animated ProductGlyph
+    // stands in, which is why no `logo` is set: pointing at a missing file
+    // would 404 on every page load.
     summary:
       "Point of sale with KRA eTIMS compliance and payment integrations built in, not bolted on.",
     description:
@@ -414,6 +431,8 @@ export type Partner = {
   fullName?: string;
   /** Path under /public. Omit and the monogram below is rendered instead. */
   logo?: string;
+  /** See Product.logoGround — light ink on a dark field needs a dark tile. */
+  logoGround?: "light" | "dark";
   /** Shown when no logo asset is present. Keep to 2-4 characters. */
   monogram: string;
   relationship: string;
@@ -464,6 +483,7 @@ export const partners: Partner[] = [
   {
     slug: "trubai",
     name: "TrubAI",
+    logo: "/logos/trubai.png",
     // Not "TA" — that is Tari Africa's monogram and the two would be
     // indistinguishable in the partner list.
     monogram: "TR",

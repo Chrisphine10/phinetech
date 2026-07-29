@@ -26,6 +26,7 @@ export function ProductLogo({
       src={product.logo}
       alt={`${product.name} logo`}
       height={height}
+      ground={product.logoGround}
       className={className}
       fallback={
         <span
