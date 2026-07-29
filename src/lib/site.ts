@@ -560,6 +560,7 @@ export const domainStrip = [
 export const nav = [
   { href: "/services", label: "Services" },
   { href: "/products", label: "Products" },
+  { href: "/shop", label: "Shop" },
   { href: "/partners", label: "Partners" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

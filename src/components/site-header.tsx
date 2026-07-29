@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ShopBadge } from "@/components/shop-badge";
 import { nav } from "@/lib/site";
 
 export function SiteHeader() {
@@ -45,6 +46,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-1.5">
+          <ShopBadge />
           <ThemeToggle />
 
           <Link
