@@ -438,7 +438,7 @@ export const vision = {
   },
   dream: {
     title: "An industrialised Africa",
-    body: "Our long aim is an Africa that makes, researches and explores for itself. Industry needs dependable digital groundwork first: ledgers that balance, utilities that are metered, supply routes that are visible, schools that keep good records, and help that arrives when it is called. Every project we ship is a piece of that groundwork.",
+    body: "Our long aim is an Africa that makes, researches and explores for itself — on land, in orbit and under the sea. Industry needs dependable digital groundwork first: ledgers that balance, utilities that are metered, supply routes that are visible, schools that keep good records, and help that arrives when it is called. Every project we ship is a piece of that groundwork.",
   },
 } as const;
 
@@ -484,6 +484,14 @@ export const frontiers: Frontier[] = [
     aim: "An Africa that builds and operates its own missions. This is the far end of the road, and we say so plainly: it starts with engineers, data and industry on the ground.",
     today:
       "The software, cloud and AI skills a space programme draws on are the ones we practise every day. The moon in our logo is there on purpose.",
+    projects: [],
+  },
+  {
+    slug: "marine",
+    title: "Marine exploration",
+    aim: "African teams charting their own waters with underwater drones: mapping the seabed, watching reefs and fisheries, and inspecting ports, cables and pipelines. The continent has a long coastline and great lakes, and knows very little of what lies beneath them.",
+    today:
+      "No marine project yet, and we say so. What carries over is the software: the autonomy, telemetry, mapping and video pipelines that fly a survey drone are the ones that steer one underwater, and the private networks from our alliances carry the data ashore.",
     projects: [],
   },
 ];
@@ -948,6 +956,11 @@ export const imagery = {
   frontiers: {
     research: photo("lab.jpg", "A researcher at a microscope"),
     space: photo("earth.jpg", "City lights on Earth seen from orbit at night"),
+    marine: photo(
+      "marine.jpg",
+      "A diver surveying the seabed with an underwater camera rig",
+      "center 40%",
+    ),
   } as Record<string, Photo | undefined>,
 
   /** Page headers, keyed by route. */
@@ -971,6 +984,7 @@ export const imagery = {
     photo("traffic.jpg", "City highway at night"),
     photo("market.jpg", "Market trader with a phone"),
     photo("earth.jpg", "Earth at night from orbit"),
+    photo("marine.jpg", "Diver surveying the seabed"),
   ],
 };
 
@@ -1021,6 +1035,8 @@ export const domainStrip = [
   "Smart cities",
   "Smart communities",
   "Smart utility metering",
+  "Underwater drones",
+  "Marine exploration",
   "Emergency response",
   "Digital classrooms",
   "Field sales routes",

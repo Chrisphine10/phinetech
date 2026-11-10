@@ -168,7 +168,7 @@ export default function ProjectsPage() {
             className="min-h-[260px] lg:col-span-12"
             hud={{
               tl: <>Trajectory</>,
-              tr: <>04 frontiers</>,
+              tr: <>{pad(frontiers.length)} frontiers</>,
               bl: <Route from="Groundwork" to="Industry" />,
             }}
           >
@@ -178,7 +178,7 @@ export default function ProjectsPage() {
               </h2>
               <p className="mt-3 max-w-2xl text-muted-foreground text-pretty">
                 These systems are the groundwork for something larger: an
-                industrialised Africa. Four frontiers we are building towards,
+                industrialised Africa. The frontiers we are building towards,
                 and what we have in hand for each today.
               </p>
             </div>
@@ -190,13 +190,17 @@ export default function ProjectsPage() {
               delay={(i % 2) * 90}
               photo={imagery.frontiers[f.slug]}
               hover
-              className="min-h-[320px] sm:col-span-6"
+              className={`min-h-[320px] ${
+                i === frontiers.length - 1 && frontiers.length % 2 === 1
+                  ? "lg:col-span-12"
+                  : "sm:col-span-6"
+              }`}
               hud={{ tl: <>F-{pad(i + 1)}</>, tr: <>Aim</> }}
             >
               <span className="mt-5 size-9">
                 <DomainIcon slug={f.slug} />
               </span>
-              <div className="mt-auto pt-5">
+              <div className="mt-auto max-w-3xl pt-5">
                 <h3 className="text-xl font-semibold tracking-tight">
                   {f.title}
                 </h3>

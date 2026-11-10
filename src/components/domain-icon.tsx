@@ -128,6 +128,43 @@ export function DomainIcon({ slug, className = "" }: Props) {
         </svg>
       );
 
+    /* A submersible under the waterline, with a sonar ping below it. */
+    case "marine":
+      return (
+        <svg viewBox="0 0 48 48" className={box} aria-hidden>
+          <path
+            d="M4 12c4-3 7-3 11 0s7 3 11 0 7-3 11 0 5 2 7 1"
+            className="anim-draw"
+            style={draw(52)}
+            {...S}
+          />
+          <rect
+            x="12"
+            y="22"
+            width="22"
+            height="10"
+            rx="5"
+            className="anim-draw"
+            style={draw(60, 1)}
+            {...S}
+          />
+          <path
+            d="M34 27h5M39 23v8M20 22v-3h6v3"
+            className="anim-draw"
+            style={draw(30, 1)}
+            {...S}
+          />
+          <circle cx="18" cy="27" r="2" fill="currentColor" className="anim-node" />
+          <path
+            d="M15 38c3 2 6 3 9 3s6-1 9-3"
+            strokeDasharray="2 4"
+            className="anim-draw"
+            style={draw(22, 2)}
+            {...S}
+          />
+        </svg>
+      );
+
     default:
       return (
         <svg viewBox="0 0 48 48" className={box} aria-hidden>

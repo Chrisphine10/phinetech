@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+#
+# Deploys phinetech.co.ke from origin/main.
+#
+# Run as the `phinetech` user. GitHub Actions reaches it through a restricted
+# SSH key whose authorized_keys entry is pinned to this script, so the key can
+# do nothing else. Root can also run it by hand:
+#
+#     sudo -u phinetech -H /usr/local/bin/phinetech-deploy
+#
+# What it does: fast-forward the checkout to origin/main, install, build, and
+# restart the service. If the install, the build or the health check fails,
+# it puts the previous commit and the previous build back, so a bad push
+# leaves the live site as it was.
+#
+# Pass --force to rebuild even when the checkout is already up to date.
+
+set -euo pipefail
+
+ROOT=/var/www/phinetech
+APP="$ROOT/app"
+KEEP="$ROOT/next-previous"
+SERVICE=phinetech.service
+HEALTH=http://127.0.0.1:3000/
+
+export PATH=/usr/local/bin:/usr/bin:/bin
+export HOME="$ROOT"
+export NEXT_TELEMETRY_DISABLED=1
+
+log() { printf '[deploy %s] %s\n' "$(date -u +%H:%M:%S)" "$*"; }
+
+# Arguments come from the local command line, or from the SSH client when the
+# key is pinned to this script. Only --force is understood.
+force=no
+case "${1:-${SSH_ORIGINAL_COMMAND:-}}" in
+  --force) force=yes ;;
+esac
+
+# One deploy at a time.
+exec 9>"$ROOT/.deploy.lock"
+if ! flock -n 9; then
+  log "another deploy is running; giving up"
+  exit 1
+fi
+
+cd "$APP"
+
+prev=$(git rev-parse HEAD)
+git fetch --quiet origin main
+target=$(git rev-parse origin/main)
+
+if [ "$prev" = "$target" ] && [ -f .next/BUILD_ID ] && [ "$force" = no ]; then
+  log "already at ${target:0:7}; nothing to do"
+  exit 0
+fi
+
+log "deploying ${prev:0:7} -> ${target:0:7}"
+
+# Keep the running build so it can be put back.
+rm -rf "$KEEP"
+if [ -d .next ]; then cp -a .next "$KEEP"; fi
+
+healthy() {
+  local i code
+  for i in 1 2 3 4 5 6 7 8 9 10; do
+    code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "$HEALTH" || true)
+    if [ "$code" = 200 ]; then return 0; fi
+    sleep 2
+  done
+  return 1
+}
+
+rollback() {
+  log "ROLLING BACK to ${prev:0:7}: $1"
+  git reset --quiet --hard "$prev"
+  rm -rf .next
+  if [ -d "$KEEP" ]; then mv "$KEEP" .next; fi
+  npm ci --no-audit --no-fund >/dev/null 2>&1 || log "warning: reinstall of previous dependencies failed"
+  sudo /usr/bin/systemctl restart "$SERVICE" || true
+  if healthy; then log "previous version is serving again"; else log "previous version is NOT answering"; fi
+  exit 1
+}
+
+git merge --quiet --ff-only origin/main || rollback "checkout could not fast-forward"
+
+log "installing dependencies"
+npm ci --no-audit --no-fund >/dev/null || rollback "npm ci failed"
+
+log "building"
+npm run build || rollback "build failed"
+[ -f .next/BUILD_ID ] || rollback "build produced no BUILD_ID"
+
+log "restarting $SERVICE"
+sudo /usr/bin/systemctl restart "$SERVICE" || rollback "service restart failed"
+
+healthy || rollback "site did not answer 200 after restart"
+
+log "live at ${target:0:7} (build $(cat .next/BUILD_ID))"

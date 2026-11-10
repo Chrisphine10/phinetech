@@ -128,13 +128,17 @@ export default function AboutPage() {
               delay={(i % 2) * 90}
               photo={imagery.frontiers[f.slug]}
               hover
-              className="min-h-[300px] sm:col-span-6 lg:col-span-3"
+              className={`min-h-[300px] ${
+                i === frontiers.length - 1 && frontiers.length % 2 === 1
+                  ? "lg:col-span-12"
+                  : "sm:col-span-6 lg:col-span-3"
+              }`}
               hud={{ tl: <>F-{pad(i + 1)}</>, tr: <>Aim</> }}
             >
               <span className="mt-5 size-9">
                 <DomainIcon slug={f.slug} />
               </span>
-              <div className="mt-auto pt-5">
+              <div className="mt-auto max-w-3xl pt-5">
                 <h3 className="text-lg font-semibold tracking-tight">
                   {f.title}
                 </h3>
