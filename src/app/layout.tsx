@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono, Space_Grotesk } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { site } from "@/lib/site";
+import { BentoMotion } from "@/components/bento-motion";
 import "./globals.css";
+import "./theme.css";
 
 // Inter carries the Notion-like feel. Self-hosted by next/font, so no request
 // reaches Google at runtime.
@@ -19,6 +21,14 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+// Display face for headings: geometric and slightly technical, to sit with the
+// mono read-outs.
+const display = Space_Grotesk({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -28,6 +38,12 @@ export const metadata: Metadata = {
   description: site.description,
   applicationName: site.name,
   keywords: [
+    "smart city solutions Kenya",
+    "smart community technology Africa",
+    "smart utility metering",
+    "emergency response software",
+    "education technology Africa",
+    "AI automation Kenya",
     "SACCO management system",
     "VSLA digitisation",
     "school management system Kenya",
@@ -55,20 +71,20 @@ export const metadata: Metadata = {
 // export — Next no longer accepts themeColor inside `metadata`.
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1720" },
+    { color: "#090909" },
   ],
 };
 
-// Applies the stored theme before first paint so there is no light/dark flash.
+// Dark is the default; a stored "light" choice is applied before first paint
+// so there is no flash.
 const themeScript = `
 (function () {
   try {
     var t = localStorage.getItem('phinetech-theme');
-    if (t === 'light' || t === 'dark') {
-      document.documentElement.setAttribute('data-theme', t);
-    }
-  } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
 })();
 `;
 
@@ -80,7 +96,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
+      data-theme="dark"
       suppressHydrationWarning
     >
       <head>
@@ -92,6 +109,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="flex min-h-full flex-col">
+        <BentoMotion />
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />

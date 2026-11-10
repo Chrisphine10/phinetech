@@ -50,156 +50,12 @@
   --color-moon: #fbfaf9;
 
   --radius-notion: 3px;
-  --radius-card: 8px;
+  --radius-card: 18px;
 
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---------------------------- semantic: light ---------------------------- */
-:root {
-  color-scheme: light;
-
-  --background: #ffffff;
-  --foreground: #182432;
-
-  --surface: #ffffff;
-  --surface-muted: #f4f6f8;
-  --surface-hover: #e6eaef;
-  --surface-inverse: #182432;
-  --foreground-inverse: #ffffff;
-
-  --border: #dde3ea;
-  --border-strong: #c2ccd8;
-
-  --muted-foreground: #4a5c74;
-  --subtle-foreground: #6b7e96;
-
-  --primary: #182432;
-  --primary-hover: #0e1720;
-  --primary-foreground: #ffffff;
-
-  --accent: #b12724;
-  --accent-hover: #8e1f1d;
-  --accent-foreground: #ffffff;
-  --accent-subtle: #fbe2e0;
-
-  /* Plate behind the logo. Transparent in light — the page is already white. */
-  --logo-plate: transparent;
-  --logo-plate-ring: transparent;
-
-  --shadow-card: 0 1px 2px rgb(24 36 50 / 0.05), 0 2px 8px rgb(24 36 50 / 0.05);
-  --shadow-pop: 0 2px 4px rgb(24 36 50 / 0.08), 0 8px 24px rgb(24 36 50 / 0.12);
-}
-
-/* ----------------------------- semantic: dark ---------------------------- */
-/* The explicit data-theme opt-in must win in both directions, so the light
-   override below is intentional and must stay after the media query. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-
-    --background: #0e1720;
-    --foreground: #e6eaef;
-
-    --surface: #152030;
-    --surface-muted: #182432;
-    --surface-hover: #1c2837;
-    --surface-inverse: #ffffff;
-    --foreground-inverse: #182432;
-
-    --border: #253447;
-    --border-strong: #34455a;
-
-    --muted-foreground: #9dabbd;
-    --subtle-foreground: #6b7e96;
-
-    --primary: #ffffff;
-    --primary-hover: #e6eaef;
-    --primary-foreground: #182432;
-
-    --accent: #e2564f;
-    --accent-hover: #ee9691;
-    --accent-foreground: #0e1720;
-    --accent-subtle: #47100f;
-
-    /* The supplied logo exists only in its navy colourway, and its wolf is
-       fused to the P body so it cannot be safely recoloured. A light plate
-       keeps the artwork exact and legible on the dark ground. */
-    --logo-plate: #ffffff;
-    --logo-plate-ring: rgb(255 255 255 / 0.14);
-
-    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.3);
-    --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.55);
-  }
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-
-  --background: #0e1720;
-  --foreground: #e6eaef;
-
-  --surface: #152030;
-  --surface-muted: #182432;
-  --surface-hover: #1c2837;
-  --surface-inverse: #ffffff;
-  --foreground-inverse: #182432;
-
-  --border: #253447;
-  --border-strong: #34455a;
-
-  --muted-foreground: #9dabbd;
-  --subtle-foreground: #6b7e96;
-
-  --primary: #ffffff;
-  --primary-hover: #e6eaef;
-  --primary-foreground: #182432;
-
-  --accent: #e2564f;
-  --accent-hover: #ee9691;
-  --accent-foreground: #0e1720;
-  --accent-subtle: #47100f;
-
-  --logo-plate: #ffffff;
-  --logo-plate-ring: rgb(255 255 255 / 0.14);
-
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 2px 8px rgb(0 0 0 / 0.3);
-  --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.55);
-}
-
-:root[data-theme="light"] {
-  color-scheme: light;
-
-  --background: #ffffff;
-  --foreground: #182432;
-
-  --surface: #ffffff;
-  --surface-muted: #f4f6f8;
-  --surface-hover: #e6eaef;
-  --surface-inverse: #182432;
-  --foreground-inverse: #ffffff;
-
-  --border: #dde3ea;
-  --border-strong: #c2ccd8;
-
-  --muted-foreground: #4a5c74;
-  --subtle-foreground: #6b7e96;
-
-  --primary: #182432;
-  --primary-hover: #0e1720;
-  --primary-foreground: #ffffff;
-
-  --accent: #b12724;
-  --accent-hover: #8e1f1d;
-  --accent-foreground: #ffffff;
-  --accent-subtle: #fbe2e0;
-
-  --logo-plate: transparent;
-  --logo-plate-ring: transparent;
-
-  --shadow-card: 0 1px 2px rgb(24 36 50 / 0.05), 0 2px 8px rgb(24 36 50 / 0.05);
-  --shadow-pop: 0 2px 4px rgb(24 36 50 / 0.08), 0 8px 24px rgb(24 36 50 / 0.12);
-}
+/* Semantic colour tokens live in theme.css. */
 
 /* ------------- expose semantic tokens as Tailwind utilities --------------- */
 @theme inline {
@@ -288,7 +144,7 @@ body {
    else we hold. Uses the brand navy rather than pure black so it reads as part
    of the system rather than a hole in the page. */
 .logo-tile--dark {
-  background-color: var(--color-navy-950);
+  background-color: #0b0b0b;
   box-shadow: 0 0 0 1px var(--border);
 }
 

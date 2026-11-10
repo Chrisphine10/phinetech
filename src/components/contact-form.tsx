@@ -72,7 +72,7 @@ export function ContactForm() {
   }
 
   const field =
-    "mt-1.5 w-full rounded-[3px] border border-line bg-surface px-3 py-2 text-sm transition-colors placeholder:text-subtle-foreground focus:border-line-strong focus:outline-none";
+    "mt-1.5 w-full rounded-[10px] border border-line bg-surface-muted px-3.5 py-2.5 text-sm transition-colors placeholder:text-subtle-foreground focus:border-line-strong focus:outline-none";
   const label = "text-sm font-medium";
   const errorText = "mt-1 text-xs text-muted-foreground";
 

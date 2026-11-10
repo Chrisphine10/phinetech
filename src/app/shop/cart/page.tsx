@@ -17,7 +17,8 @@ export default function CartPage() {
         title="Your cart"
         lead="Nothing is charged here. Send the cart across and we will come back with a written quote covering availability, pricing and lead time."
       />
-      <div className="mx-auto max-w-5xl px-5 py-14">
+      {/* CartView lays itself out as bento cells. */}
+      <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
         <CartView />
       </div>
     </>

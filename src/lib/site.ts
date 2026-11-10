@@ -16,11 +16,13 @@ export const site = {
   /** The brand line from the logo lockup. */
   tagline: "Vision it. We create it.",
   /** What we actually do — used as the H1, where a descriptive line serves SEO better. */
-  descriptor: "AI automation, software engineering and secure cloud",
+  descriptor: "Technology for smart cities and smart communities",
+  /** The engineering we sell — kept for metadata and the services pages. */
+  capability: "AI automation, software engineering and secure cloud",
   /** Sampled from the logo artwork. */
   brand: { navy: "#182432", red: "#B12724" },
   description:
-    "PhineTech is a technology partner to organisations in Africa and beyond. We build AI automation, custom software, cloud and cyber security capability — backed by our own products, a dedicated technical and administrative team, and support with fundraising and financial linkages.",
+    "PhineTech builds the digital systems that smart cities and smart communities run on — finance, schools, commerce, utilities, mobility and emergency response — with AI automation, custom software, cloud and cyber security. It is the groundwork for a larger aim: an industrialised Africa.",
   founded: "Nairobi, Kenya",
 
   contact: {
@@ -418,6 +420,346 @@ export function getProduct(slug: string): Product | undefined {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                   vision                                   */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Where the company is headed.
+ *
+ * `focus` is what we build today. `dream` is the long aim and is written as an
+ * aim — nothing here claims a capability we do not yet have. Each frontier
+ * names the work already in hand that points towards it, so the ambition stays
+ * tied to something a visitor can check.
+ */
+export const vision = {
+  focus: {
+    title: "Smart cities and smart communities",
+    body: "A city is smart when the systems people depend on every day — money, school, trade, power, transport, safety — are recorded properly, connected to each other and open to the people they serve. We build those systems one at a time, for the conditions African cities and communities actually have.",
+  },
+  dream: {
+    title: "An industrialised Africa",
+    body: "Our long aim is an Africa that makes, researches and explores for itself. Industry needs dependable digital groundwork first: ledgers that balance, utilities that are metered, supply routes that are visible, schools that keep good records, and help that arrives when it is called. Every project we ship is a piece of that groundwork.",
+  },
+} as const;
+
+export type Frontier = {
+  slug: string;
+  title: string;
+  /** The aim, stated as an aim. */
+  aim: string;
+  /** What exists today that points towards it. */
+  today: string;
+  /** Slugs from `projects` that are the present-day evidence. */
+  projects: string[];
+};
+
+export const frontiers: Frontier[] = [
+  {
+    slug: "education",
+    title: "Advancing education",
+    aim: "Every learner on the continent with a complete record, a teacher who has time to teach, and access to labs their school could never afford to build.",
+    today:
+      "School management with a mobile app for teachers, learners and parents, and immersive virtual-reality learning for children and clubs.",
+    projects: ["classcompass", "vr-labs-africa"],
+  },
+  {
+    slug: "emergency-response",
+    title: "Emergency response",
+    aim: "A call for help that reaches the right responder in seconds, with the case history and the location already in front of them.",
+    today:
+      "A confidential support-access app and case-management back office, delivered for a national gender-violence recovery organisation.",
+    projects: ["hodi"],
+  },
+  {
+    slug: "research",
+    title: "Research",
+    aim: "African institutions producing their own data and their own findings, instead of importing conclusions drawn somewhere else.",
+    today:
+      "Behavioural mobility data for city planners, and clean operational data from the ledgers, meters and classrooms our systems already run.",
+    projects: ["trubai", "tari-electra", "intellicash-sacco"],
+  },
+  {
+    slug: "space",
+    title: "Space exploration",
+    aim: "An Africa that builds and operates its own missions. This is the far end of the road, and we say so plainly: it starts with engineers, data and industry on the ground.",
+    today:
+      "The software, cloud and AI skills a space programme draws on are the ones we practise every day. The moon in our logo is there on purpose.",
+    projects: [],
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/*                                  projects                                  */
+/* -------------------------------------------------------------------------- */
+
+/** The parts of a smart city or smart community a project serves. */
+export type Domain = {
+  slug: string;
+  title: string;
+  summary: string;
+};
+
+export const domains: Domain[] = [
+  {
+    slug: "community-finance",
+    title: "Community finance",
+    summary:
+      "Savings, credit and group funds kept on one trusted record, from the village meeting to the cooperative head office.",
+  },
+  {
+    slug: "commerce-industry",
+    title: "Commerce and industry",
+    summary:
+      "Tills, stock, field sales and production tracked as they happen, with tax compliance built into the sale.",
+  },
+  {
+    slug: "utilities-energy",
+    title: "Utilities and energy",
+    summary:
+      "Power that is metered, measured and billed fairly — the first thing a smart estate or an industrial park needs.",
+  },
+  {
+    slug: "education",
+    title: "Education",
+    summary:
+      "School records, classroom tools and immersive learning that reach learners wherever they are.",
+  },
+  {
+    slug: "safety-response",
+    title: "Safety and emergency response",
+    summary:
+      "Confidential access to help, and the case tools responders need to follow through.",
+  },
+  {
+    slug: "mobility-planning",
+    title: "Mobility and city planning",
+    summary:
+      "Data on how and why people move, so planners can fix causes rather than symptoms.",
+  },
+  {
+    slug: "community-culture",
+    title: "Community and culture",
+    summary:
+      "Tools that bring people into the same room, in their own languages.",
+  },
+  {
+    slug: "digital-infrastructure",
+    title: "Digital infrastructure and AI",
+    summary:
+      "The shared plumbing: hosting, mail, AI content and automation that the other systems stand on.",
+  },
+];
+
+export type Project = {
+  slug: string;
+  name: string;
+  domain: string;
+  /** PhineTech's part in it. Shown on the card — be exact about ownership. */
+  role: string;
+  status: "Live" | "In development" | "Pilot";
+  summary: string;
+  /** What it is delivered as. */
+  platforms: string[];
+  /** Shown in the tile when there is no logo. 2-3 characters. */
+  monogram: string;
+  /** Set when the project has a full page under /products. */
+  product?: string;
+  logo?: string;
+  logoGround?: "light" | "dark";
+  href?: string;
+  hrefLabel?: string;
+};
+
+/**
+ * Everything PhineTech has built, co-built or consults on.
+ *
+ * REVIEW BEFORE PUBLISHING: several of these are owned by partner companies
+ * and were engineered by PhineTech. The `role` line states that relationship
+ * and must be confirmed with each owner, along with the public link.
+ */
+export const projects: Project[] = [
+  {
+    slug: "intellicash-sacco",
+    name: "IntelliCash SACCO",
+    domain: "community-finance",
+    role: "PhineTech product",
+    status: "Live",
+    summary:
+      "Core system for savings and credit cooperatives: members, savings, loans, dividends and reporting on one ledger.",
+    platforms: ["Web"],
+    monogram: "IC",
+    product: "intellicash-sacco",
+    logo: "/logos/intellicash.png",
+    href: "https://intellicash.africa",
+    hrefLabel: "intellicash.africa",
+  },
+  {
+    slug: "intellicash-vsla",
+    name: "IntelliCash VSLA",
+    domain: "community-finance",
+    role: "PhineTech product",
+    status: "Live",
+    summary:
+      "Digital records for village savings and loan groups, captured during the meeting on a phone that works offline.",
+    platforms: ["Web", "Android"],
+    monogram: "IV",
+    product: "intellicash-vsla",
+    logo: "/logos/intellicash.png",
+    href: "https://intellicash.co.ke",
+    hrefLabel: "intellicash.co.ke",
+  },
+  {
+    slug: "pos",
+    name: "PhineTech POS",
+    domain: "commerce-industry",
+    role: "PhineTech product",
+    status: "Live",
+    summary:
+      "Point of sale for shops and multi-branch businesses, with KRA eTIMS invoicing and mobile-money payments built in.",
+    platforms: ["Web"],
+    monogram: "POS",
+    product: "pos",
+    logo: "/logos/phine-pos.png",
+    logoGround: "dark",
+  },
+  {
+    slug: "kulaos",
+    name: "KulaOS",
+    domain: "commerce-industry",
+    role: "Built by PhineTech, part of the Tari Africa family",
+    status: "Live",
+    summary:
+      "Operating system for restaurants and food businesses: tables, orders, kitchen production with food-safety checks, eTIMS, and a Windows till that keeps selling offline and syncs to the cloud.",
+    platforms: ["Web", "Windows"],
+    monogram: "KO",
+    href: "https://kulaos.co.ke",
+    hrefLabel: "kulaos.co.ke",
+  },
+  {
+    slug: "raut",
+    name: "Raut",
+    domain: "commerce-industry",
+    role: "Engineered by PhineTech for Tari Africa Platforms",
+    status: "Live",
+    summary:
+      "ERP, CRM and field-sales platform for distributors. Sales reps follow mapped routes and take orders offline; the back office sees stock, invoices and payments as they happen.",
+    platforms: ["Web", "Android"],
+    monogram: "RT",
+  },
+  {
+    slug: "tari-electra",
+    name: "Tari Electra",
+    domain: "utilities-energy",
+    role: "Engineered by PhineTech for Tari Africa",
+    status: "Live",
+    summary:
+      "Smart utility management for landlords, tenants and electricians: metered consumption, balances and payments, plus a shop for meters and accessories.",
+    platforms: ["Web", "Android"],
+    monogram: "TE",
+    href: "https://tarielectra.africa",
+    hrefLabel: "tarielectra.africa",
+  },
+  {
+    slug: "classcompass",
+    name: "ClassCompass",
+    domain: "education",
+    role: "PhineTech product",
+    status: "Live",
+    summary:
+      "School management for enrolment, fees, attendance and exams, with a mobile app for teachers, learners and parents.",
+    platforms: ["Web", "Android"],
+    monogram: "CC",
+    product: "classcompass",
+    logo: "/logos/classcompass.png",
+  },
+  {
+    slug: "vr-labs-africa",
+    name: "VR Labs Africa",
+    domain: "education",
+    role: "Built by PhineTech with Tari Africa",
+    status: "Pilot",
+    summary:
+      "Immersive learning for children and schools: virtual-reality lessons, a games portal for kids, clubs and tournaments, with child-safe sign-in.",
+    platforms: ["Web"],
+    monogram: "VR",
+    href: "https://vrlabs.phinetech.co.ke",
+    hrefLabel: "vrlabs.phinetech.co.ke",
+  },
+  {
+    slug: "hodi",
+    name: "Hodi",
+    domain: "safety-response",
+    role: "Built by PhineTech for GVRC",
+    status: "Live",
+    summary:
+      "Confidential support access for survivors of gender-based violence, with a case-management back office for the response team.",
+    platforms: ["Web", "Android"],
+    monogram: "HD",
+    product: "hodi",
+    logo: "/logos/hodi.png",
+    href: "https://hodi-admin.co.ke",
+    hrefLabel: "hodi-admin.co.ke",
+  },
+  {
+    slug: "trubai",
+    name: "TrubAI",
+    domain: "mobility-planning",
+    role: "PhineTech consults on the technology",
+    status: "Live",
+    summary:
+      "AI-enabled urban planning and transport data platform that explains why movement patterns occur, implemented with the New York City government.",
+    platforms: ["Web"],
+    monogram: "TR",
+    logo: "/logos/trubai.png",
+  },
+  {
+    slug: "goons",
+    name: "Goons",
+    domain: "community-culture",
+    role: "PhineTech product",
+    status: "Live",
+    summary:
+      "A social deduction party game for game nights, youth forums and team building, played in English, Swahili or French on Android or in the browser.",
+    platforms: ["Android", "Web"],
+    monogram: "GN",
+    href: "https://goons.phinetech.co.ke",
+    hrefLabel: "goons.phinetech.co.ke",
+  },
+  {
+    slug: "tari-studio",
+    name: "Tari Studio",
+    domain: "digital-infrastructure",
+    role: "Engineered by PhineTech for Tari Africa",
+    status: "Live",
+    summary:
+      "AI-assisted studio for agencies and businesses to plan, produce and manage marketing content and leads in one workspace.",
+    platforms: ["Web"],
+    monogram: "TS",
+    href: "https://taristudio.africa",
+    hrefLabel: "taristudio.africa",
+  },
+  {
+    slug: "phinetech-cloud",
+    name: "PhineTech Cloud and Mail",
+    domain: "digital-infrastructure",
+    role: "PhineTech infrastructure",
+    status: "Live",
+    summary:
+      "Managed hosting and multi-domain business email that our products and partners run on, monitored and hardened by our own team.",
+    platforms: ["Cloud"],
+    monogram: "PC",
+  },
+];
+
+export function getProject(slug: string): Project | undefined {
+  return projects.find((p) => p.slug === slug);
+}
+
+export function projectsIn(domain: string): Project[] {
+  return projects.filter((p) => p.domain === domain);
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  partners                                  */
 /* -------------------------------------------------------------------------- */
 
@@ -490,6 +832,149 @@ export const partners: Partner[] = [
 ];
 
 /* -------------------------------------------------------------------------- */
+/*                                 alliances                                  */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Technology partnerships held under Tari Africa.
+ *
+ * These are suppliers of infrastructure a smart city needs and that we do not
+ * build ourselves: the network, and the building systems. PhineTech's part is
+ * the software and integration on top.
+ *
+ * REVIEW BEFORE PUBLISHING: confirm with Tari Africa and each company that the
+ * partnership is agreed and may be named publicly, and that the wording of
+ * `relationship` is right. No third-party logos are used here on purpose.
+ */
+export type Alliance = {
+  slug: string;
+  name: string;
+  relationship: string;
+  location: string;
+  /** One or two sentences, for cards. */
+  summary: string;
+  /** Longer description, for the partners page. */
+  body: string;
+  /** What PhineTech and Tari Africa do with it. */
+  role: string;
+  capabilities: string[];
+  url: string;
+  urlLabel: string;
+};
+
+export const alliances: Alliance[] = [
+  {
+    slug: "telcore",
+    name: "Telcore",
+    relationship: "Technology partner",
+    location: "Via Tari Africa",
+    summary:
+      "Telecommunications infrastructure: private LTE and 5G networks, core network systems and mission-critical communications for sites that cannot depend on a public network.",
+    body: "Telcore develops, manufactures and integrates telecommunications infrastructure — radio access from macro to femto base stations, 4G and 5G core network and subscriber data systems, traffic and priority management, and network security. Its private LTE and 5G networks give a port, a mine, a factory or an energy site its own secure connectivity, and its push-to-talk, dispatch and situation-centre systems put crews, services and dispatchers on one channel.",
+    role: "Through Tari Africa, we bring this connectivity layer to industrial sites and public-safety projects, and build the applications that run on it.",
+    capabilities: [
+      "Private LTE / 5G",
+      "Core network",
+      "Critical comms and dispatch",
+      "Situation centre",
+      "Network security",
+      "IoT and telemetry",
+    ],
+    url: "https://tel-core.com",
+    urlLabel: "tel-core.com",
+  },
+  {
+    slug: "octagram",
+    name: "Octagram",
+    relationship: "Technology partner",
+    location: "Via Tari Africa",
+    summary:
+      "Smart-building systems: one controller platform for access control, alarms and automation in homes, offices and hotels, with software to manage whole estates.",
+    body: "Octagram builds a unified hardware platform for security, automation and building systems. A single controller takes on a different job depending on its firmware — door access, burglar and fire alarms, lighting, shading and engineering equipment — for a smart home, an office floor or a block of hotel rooms. Its Flex software manages many controllers and thousands of users from one place, and its platform joins building-management, energy and access systems from different vendors.",
+    role: "Through Tari Africa, we bring these building systems to estates, offices and public buildings, and connect them to the utility, payment and safety software we build.",
+    capabilities: [
+      "Access control",
+      "Building automation",
+      "Fire and intruder alarms",
+      "Smart home and hotel",
+      "Estate management software",
+      "BMS integration",
+    ],
+    url: "https://octagram.eu/catalog/",
+    urlLabel: "octagram.eu",
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/*                                  imagery                                   */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Photographs, self-hosted under /public/images.
+ *
+ * All but the drone are from Unsplash, downloaded under the Unsplash licence
+ * (free to use, no attribution required). They are shown in greyscale by the
+ * theme. The drone picture was supplied by PhineTech.
+ */
+type Photo = { src: string; alt: string; position?: string };
+
+const photo = (file: string, alt: string, position?: string): Photo => ({
+  src: `/images/${file}`,
+  alt,
+  position,
+});
+
+export const imagery = {
+  drone: photo("drone.png", "Survey drone carrying a camera"),
+  rocket: photo("rocket.jpg", "A rocket lifting off its launch pad"),
+  city: photo("city.jpg", "A tower lit above the Nairobi skyline at night"),
+  skyline: photo("skyline.jpg", "The Nairobi skyline at night"),
+  earth: photo("earth.jpg", "City lights on Earth seen from orbit at night"),
+  chip: photo("chip.jpg", "A processor held in tweezers"),
+  cta: photo("wafer.jpg", "A silicon wafer of microchip dies"),
+  alliance: photo("power.jpg", "Transmission towers carrying power lines"),
+
+  /** Keyed by domain slug. A domain without a photo gets a blueprint panel. */
+  domains: {
+    "community-finance": photo("market.jpg", "A trader at a market stall holding a phone"),
+    "utilities-energy": photo("power.jpg", "Transmission towers carrying power lines"),
+    education: photo("classroom.jpg", "A teacher instructing a class"),
+    "safety-response": photo("ambulance.jpg", "An ambulance driving with its lights on"),
+    "mobility-planning": photo("traffic.jpg", "A highway into a city at night"),
+    "digital-infrastructure": photo("server.jpg", "Network cabling in a server rack"),
+  } as Record<string, Photo | undefined>,
+
+  /** Keyed by frontier slug. */
+  frontiers: {
+    research: photo("lab.jpg", "A researcher at a microscope"),
+    space: photo("earth.jpg", "City lights on Earth seen from orbit at night"),
+  } as Record<string, Photo | undefined>,
+
+  /** Page headers, keyed by route. */
+  headers: {
+    projects: photo("skyline.jpg", "The Nairobi skyline at night"),
+    products: photo("chip.jpg", "A processor held in tweezers"),
+    services: photo("server.jpg", "Network cabling in a server rack"),
+    partners: photo("power.jpg", "Transmission towers carrying power lines"),
+    about: photo("launch-trail.jpg", "The light trail of a rocket launch at dusk"),
+    contact: photo("earth.jpg", "City lights on Earth seen from orbit at night"),
+    shop: photo("factory.jpg", "Industrial machinery on a factory floor"),
+  } as Record<string, Photo | undefined>,
+
+  gallery: [
+    photo("skyline.jpg", "Nairobi skyline at night"),
+    photo("classroom.jpg", "A teacher instructing a class"),
+    photo("power.jpg", "Transmission towers"),
+    photo("factory.jpg", "Factory machinery"),
+    photo("rocket.jpg", "Rocket launch"),
+    photo("lab.jpg", "Researcher at a microscope"),
+    photo("traffic.jpg", "City highway at night"),
+    photo("market.jpg", "Market trader with a phone"),
+    photo("earth.jpg", "Earth at night from orbit"),
+  ],
+};
+
+/* -------------------------------------------------------------------------- */
 /*                                  company                                   */
 /* -------------------------------------------------------------------------- */
 
@@ -525,14 +1010,20 @@ export const principles = [
 ];
 
 export const stats: { value: number; suffix?: string; label: string }[] = [
-  { value: 6, label: "Service lines" },
-  { value: 5, label: "Products in production" },
-  { value: 4, label: "Partner organisations" },
+  { value: projects.length, label: "Projects built or in build" },
+  { value: domains.length, label: "Smart-community domains" },
+  { value: services.length, label: "Service lines" },
   { value: 2, label: "Continents served" },
 ];
 
 /** Scrolling strip on the home page — the ground we cover. */
 export const domainStrip = [
+  "Smart cities",
+  "Smart communities",
+  "Smart utility metering",
+  "Emergency response",
+  "Digital classrooms",
+  "Field sales routes",
   "AI automation",
   "Document extraction",
   "SACCO ledgers",
@@ -559,6 +1050,7 @@ export const domainStrip = [
 
 export const nav = [
   { href: "/services", label: "Services" },
+  { href: "/projects", label: "Projects" },
   { href: "/products", label: "Products" },
   { href: "/shop", label: "Shop" },
   { href: "/partners", label: "Partners" },

@@ -1,16 +1,34 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
-import { Reveal } from "@/components/reveal";
+import { Bento, Cell, Blueprint } from "@/components/bento";
+import { ChromeCta } from "@/components/drops-client";
 import { PartnerLogo } from "@/components/partner-logo";
 import { ProductGlyph } from "@/components/product-glyph";
-import { partners, products } from "@/lib/site";
+import { partners, alliances, products, imagery } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Partners",
   description:
-    "PhineTech partners with Tari Africa, GVRC, Intelli-Wealth Limited and TrubAI in New York — providing engineering capacity under continuing engagements.",
+    "PhineTech partners with Tari Africa, GVRC, Intelli-Wealth Limited and TrubAI, and works with Telcore and Octagram through Tari Africa on the networks and building systems a smart city needs.",
 };
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+const steps = [
+  {
+    title: "We learn the domain",
+    body: "Cooperative accounting, school fee structures and case handling each have rules that are not obvious from outside. We learn them before we design anything.",
+  },
+  {
+    title: "We build in the open",
+    body: "Progress is visible throughout, not revealed at the end. That is how scope problems surface while they are still cheap to fix.",
+  },
+  {
+    title: "We stay",
+    body: "Systems need attention after launch. Our engagements are continuing, so the people who built it are the people who maintain it.",
+  },
+];
 
 export default function PartnersPage() {
   const hodi = products.find((p) => p.slug === "hodi");
@@ -23,70 +41,125 @@ export default function PartnersPage() {
         lead="A partnership is different from a project. It means being the engineering team an organisation does not have to hire — through delivery, and through the years of maintenance that follow. Our work runs from Nairobi to New York."
       />
 
-      <div className="mx-auto max-w-5xl px-5 py-14">
-        <ul className="divide-y divide-[var(--border)] border-y border-line">
+      <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
+        <Bento>
+          {/* ------------------------- development partners ------------------------ */}
           {partners.map((partner, i) => (
-            <Reveal as="li" key={partner.slug} delay={i * 90}>
-              <div className="flex flex-col gap-5 py-8 sm:flex-row sm:gap-8">
-                <PartnerLogo partner={partner} size={64} />
-
-                <div className="sm:w-56 sm:shrink-0">
-                  <h2 className="text-lg font-semibold tracking-tight">
-                    {partner.name}
-                  </h2>
-                  {partner.fullName && (
-                    <p className="mt-0.5 text-sm text-muted-foreground">
-                      {partner.fullName}
-                    </p>
-                  )}
-                  <p className="mt-1.5 text-xs tracking-wider text-subtle-foreground uppercase">
-                    {partner.relationship}
-                  </p>
-                  {partner.location && (
-                    <p className="mt-1.5 inline-block rounded-[3px] border border-line px-2 py-0.5 text-xs text-muted-foreground">
-                      {partner.location}
-                    </p>
-                  )}
-                  {partner.url && (
-                    <a
-                      href={partner.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-block rounded-[3px] font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {partner.urlLabel} ↗
-                    </a>
-                  )}
-                </div>
-
-                <p className="flex-1 leading-relaxed text-muted-foreground">
-                  {partner.body}
-                </p>
+            <Cell
+              key={partner.slug}
+              delay={(i % 2) * 90}
+              hover
+              className="min-h-[320px] sm:col-span-6"
+              hud={{
+                tl: <>{partner.relationship}</>,
+                tr: <>{partner.location ?? "Kenya"}</>,
+              }}
+            >
+              <div className="mt-6">
+                <PartnerLogo partner={partner} size={60} />
               </div>
-            </Reveal>
+              <h2 className="mt-5 text-2xl font-bold tracking-tight">
+                {partner.name}
+              </h2>
+              {partner.fullName && (
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {partner.fullName}
+                </p>
+              )}
+              <p className="mt-3 leading-relaxed text-muted-foreground">
+                {partner.body}
+              </p>
+              {partner.url && (
+                <a
+                  href={partner.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hud mt-auto pt-5 hover:underline"
+                >
+                  <b>{partner.urlLabel} ↗</b>
+                </a>
+              )}
+            </Cell>
           ))}
-        </ul>
 
-        {/* case study */}
-        {hodi && (
-          <Reveal as="section" delay={120}>
-            <div className="mt-16 overflow-hidden rounded-[8px] border border-line bg-surface-muted">
-              <div className="grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
-                <div>
-                  <p className="text-xs font-semibold tracking-wider text-subtle-foreground uppercase">
-                    Case in point
-                  </p>
-                  <h2 className="mt-3 text-2xl font-bold tracking-tight">
+          {/* ------------------------------ alliances ------------------------------ */}
+          <Cell
+            id="alliances"
+            className="min-h-[340px] scroll-mt-24 lg:col-span-12"
+            photo={imagery.alliance}
+            hud={{ tl: <>Technology alliances</>, tr: <>Held under Tari Africa</> }}
+          >
+            <div className="mt-auto max-w-2xl">
+              <h2 className="text-3xl leading-tight font-bold tracking-tight text-balance sm:text-5xl">
+                The networks and buildings a smart city stands on
+              </h2>
+              <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">
+                Software is one layer. A smart city also needs its own secure
+                connectivity and buildings that can be monitored and
+                controlled. For those we work, through Tari Africa, with two
+                technology partners, and build the applications and
+                integrations on top.
+              </p>
+            </div>
+          </Cell>
+
+          {alliances.map((a, i) => (
+            <Cell
+              key={a.slug}
+              delay={i * 100}
+              variant="grid"
+              hover
+              className="min-h-[460px] sm:col-span-6"
+              hud={{ tl: <>{a.relationship}</>, tr: <>{a.location}</> }}
+            >
+              <p className="lockup mt-8 text-4xl sm:text-5xl">{a.name}</p>
+              <p className="mt-5 leading-relaxed text-pretty text-muted-foreground">
+                {a.body}
+              </p>
+              <p className="mt-4 text-sm leading-relaxed">
+                <span className="hud">
+                  <b>Our part /</b>
+                </span>{" "}
+                {a.role}
+              </p>
+              <ul className="mt-5 flex flex-wrap gap-1.5">
+                {a.capabilities.map((c) => (
+                  <li key={c} className="hud-chip">
+                    {c}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={a.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hud mt-auto pt-6 hover:underline"
+              >
+                <b>{a.urlLabel} ↗</b>
+              </a>
+            </Cell>
+          ))}
+
+          {/* ------------------------------ case study ----------------------------- */}
+          {hodi && (
+            <>
+              <Cell
+                variant="paper"
+                className="min-h-[340px] lg:col-span-8"
+                hud={{ tl: <>Case in point</>, tr: <>Hodi / GVRC</> }}
+              >
+                <Blueprint className="opacity-30" />
+                <div className="mt-8 max-w-2xl">
+                  <h2 className="text-3xl font-bold tracking-tight">
                     Hodi, built for GVRC
                   </h2>
-                  <p className="mt-4 max-w-2xl leading-relaxed text-pretty text-muted-foreground">
+                  <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">
                     {hodi.description}
                   </p>
-
-                  <div className="mt-6 flex flex-wrap gap-2.5">
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
                     <Link
                       href="/products/hodi"
-                      className="rounded-[3px] border border-line-strong bg-surface px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+                      className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
                     >
                       Read about Hodi →
                     </Link>
@@ -94,73 +167,67 @@ export default function PartnersPage() {
                       href="https://hodi-admin.co.ke"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-[3px] px-4 py-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                      className="hud hover:underline"
                     >
-                      hodi-admin.co.ke ↗
+                      <b>hodi-admin.co.ke ↗</b>
                     </a>
                   </div>
                 </div>
-
-                <div className="scene-3d grid place-items-center">
-                  <div className="anim-float size-40 text-foreground opacity-90 sm:size-48">
+              </Cell>
+              <Cell
+                variant="grid"
+                className="min-h-[340px] items-center justify-center lg:col-span-4"
+              >
+                <div className="scene-3d grid flex-1 place-items-center">
+                  <div className="anim-float size-44 text-foreground opacity-90">
                     <ProductGlyph slug="hodi" />
                   </div>
                 </div>
-              </div>
-            </div>
-          </Reveal>
-        )}
+              </Cell>
+            </>
+          )}
 
-        {/* working with us */}
-        <section className="mt-16 border-t border-line pt-14">
-          <Reveal>
-            <h2 className="text-2xl font-bold tracking-tight">
+          {/* --------------------------- working with us --------------------------- */}
+          <Cell
+            variant="muted"
+            className="min-h-[220px] lg:col-span-3"
+            hud={{ tl: <>Method</> }}
+          >
+            <h2 className="mt-auto text-2xl leading-tight font-bold tracking-tight">
               What a partnership looks like
             </h2>
-          </Reveal>
-
-          <div className="mt-8 grid gap-8 sm:grid-cols-3">
-            {[
-              {
-                title: "We learn the domain",
-                body: "Cooperative accounting, school fee structures and case handling each have rules that are not obvious from outside. We learn them before we design anything.",
-              },
-              {
-                title: "We build in the open",
-                body: "Progress is visible throughout, not revealed at the end. That is how scope problems surface while they are still cheap to fix.",
-              },
-              {
-                title: "We stay",
-                body: "Systems need attention after launch. Our engagements are continuing, so the people who built it are the people who maintain it.",
-              },
-            ].map((step, i) => (
-              <Reveal key={step.title} delay={i * 110}>
-                <span className="font-mono text-xs text-subtle-foreground">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 font-semibold tracking-tight">
-                  {step.title}
-                </h3>
+          </Cell>
+          {steps.map((step, i) => (
+            <Cell
+              key={step.title}
+              delay={i * 90}
+              className="min-h-[220px] sm:col-span-4 lg:col-span-3"
+              hud={{ tl: <>Step {pad(i + 1)}</> }}
+            >
+              <div className="mt-auto pt-6">
+                <h3 className="font-semibold tracking-tight">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {step.body}
                 </p>
-              </Reveal>
-            ))}
-          </div>
-        </section>
+              </div>
+            </Cell>
+          ))}
 
-        <section className="mt-16 border-t border-line pt-10">
-          <p className="text-muted-foreground">
-            Considering a development partner?{" "}
-            <Link
-              href="/contact"
-              className="rounded-[3px] font-medium text-foreground underline underline-offset-4 transition-colors hover:text-muted-foreground"
-            >
-              Get in touch
-            </Link>
-            .
-          </p>
-        </section>
+          <Cell
+            className="min-h-[280px] lg:col-span-12"
+            photo={imagery.cta}
+            hud={{ tl: <>Channel open</> }}
+          >
+            <div className="mx-auto flex flex-1 flex-col items-center justify-center py-6 text-center">
+              <h2 className="max-w-2xl text-2xl font-bold tracking-tight text-balance sm:text-4xl">
+                Considering a development partner?
+              </h2>
+              <div className="mt-6">
+                <ChromeCta href="/contact">Get in touch</ChromeCta>
+              </div>
+            </div>
+          </Cell>
+        </Bento>
       </div>
     </>
   );

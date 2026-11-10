@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored ReactDrops components (reactdrops.dev), kept as shipped.
+    "src/components/drops/**",
   ]),
 ]);
 

@@ -23,7 +23,7 @@ export function WishlistView() {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-[8px] border border-line bg-surface-muted px-8 py-16 text-center">
+      <div className="cell cell--muted cell--grid items-center px-8 py-16 text-center">
         <p className="text-lg font-medium">Nothing saved yet</p>
         <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
           Use the heart on any item to keep it here while you decide. Saved
@@ -48,9 +48,9 @@ export function WishlistView() {
         </p>
       )}
 
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="bento">
         {items.map((item) => (
-          <li key={item.slug} className="flex flex-col">
+          <li key={item.slug} className="col-span-12 flex flex-col sm:col-span-6 lg:col-span-4">
             <ShopCard item={item} />
             <div className="mt-2 flex items-center justify-between px-1">
               <button

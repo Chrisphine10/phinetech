@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
+import { Bento, Cell } from "@/components/bento";
 import { ContactForm } from "@/components/contact-form";
-import { site } from "@/lib/site";
+import { LocalTime } from "@/components/mission-clock";
+import { site, imagery } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Talk to PhineTech about SACCO, VSLA, school management, point of sale, or a development partnership.",
+    "Talk to PhineTech about smart-city and smart-community systems, SACCO, VSLA, school management, point of sale, or a development partnership.",
 };
 
 const channels = [
@@ -61,6 +63,8 @@ const faqs = [
   },
 ];
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export default function ContactPage() {
   return (
     <>
@@ -70,69 +74,82 @@ export default function ContactPage() {
         lead="Tell us what you are trying to do and roughly where you are with it. If we are not the right people, we will say so."
       />
 
-      <div className="mx-auto max-w-5xl px-5 py-14">
-        <div className="grid gap-12 lg:grid-cols-5">
+      <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
+        <Bento>
           {/* form */}
-          <div className="lg:col-span-3">
-            <h2 className="text-xs font-semibold tracking-wider text-subtle-foreground uppercase">
-              Send a message
-            </h2>
+          <Cell
+            className="lg:col-span-7 lg:row-span-5"
+            hud={{
+              tl: <>Send a message</>,
+              tr: (
+                <span className="hud-chip">
+                  <span className="signal" />
+                  Channel open
+                </span>
+              ),
+            }}
+          >
             <div className="mt-6">
               <ContactForm />
             </div>
-          </div>
+          </Cell>
 
           {/* channels */}
-          <aside className="lg:col-span-2">
-            <h2 className="text-xs font-semibold tracking-wider text-subtle-foreground uppercase">
-              Or reach us directly
-            </h2>
-
-            <ul className="mt-6 divide-y divide-[var(--border)] border-y border-line">
-              {channels.map((c) => (
-                <li key={c.label} className="py-4">
-                  <p className="text-xs tracking-wider text-subtle-foreground uppercase">
-                    {c.label}
-                  </p>
-                  <a
-                    href={c.href}
-                    className="mt-1 block rounded-[3px] text-sm font-medium transition-colors hover:text-muted-foreground"
-                  >
-                    {c.value}
-                  </a>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{c.note}</p>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 rounded-[8px] border border-line bg-surface-muted p-5">
-              <p className="text-xs tracking-wider text-subtle-foreground uppercase">
-                Location
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {site.contact.location}
-              </p>
-            </div>
-          </aside>
-        </div>
-
-        {/* faq */}
-        <section className="mt-20 border-t border-line pt-14">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Common questions
-          </h2>
-
-          <dl className="mt-8 divide-y divide-[var(--border)] border-y border-line">
-            {faqs.map((f) => (
-              <div key={f.q} className="flex flex-col gap-2 py-6 sm:flex-row sm:gap-10">
-                <dt className="font-medium sm:w-72 sm:shrink-0">{f.q}</dt>
-                <dd className="flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {f.a}
-                </dd>
+          {channels.map((c, i) => (
+            <Cell
+              key={c.label}
+              href={c.href}
+              delay={i * 60}
+              className="min-h-[130px] sm:col-span-6 lg:col-span-5"
+              hud={{ tl: <>{c.label}</>, tr: <>C-{pad(i + 1)}</> }}
+            >
+              <div className="mt-auto pt-3">
+                <p className="font-display text-lg font-semibold tracking-tight break-all">
+                  {c.value}
+                </p>
+                <p className="mt-0.5 text-sm text-muted-foreground">{c.note}</p>
               </div>
-            ))}
-          </dl>
-        </section>
+            </Cell>
+          ))}
+
+          <Cell
+            className="min-h-[200px] lg:col-span-12"
+            photo={imagery.city}
+            hud={{
+              tl: <>Location</>,
+              tr: <span className="hud-chip">01°17′S 36°49′E</span>,
+              br: <LocalTime />,
+            }}
+          >
+            <p className="lockup mt-auto text-2xl sm:text-3xl">
+              {site.contact.location}
+            </p>
+          </Cell>
+
+          {/* faq */}
+          <Cell
+            variant="paper"
+            className="min-h-[220px] lg:col-span-4 lg:row-span-2"
+            hud={{ tl: <>FAQ</>, tr: <>{pad(faqs.length)} answers</> }}
+          >
+            <h2 className="mt-auto text-3xl leading-tight font-bold tracking-tight">
+              Common questions
+            </h2>
+          </Cell>
+          {faqs.map((f, i) => (
+            <Cell
+              key={f.q}
+              delay={(i % 2) * 80}
+              className="min-h-[200px] sm:col-span-6 lg:col-span-4"
+              hud={{ tl: <>Q-{pad(i + 1)}</> }}
+            >
+              <h3 className="mt-5 font-semibold tracking-tight">{f.q}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {f.a}
+              </p>
+            </Cell>
+          ))}
+        </Bento>
       </div>
     </>
   );

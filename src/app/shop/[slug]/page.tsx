@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/page-header";
-import { Reveal } from "@/components/reveal";
+import { Bento, Cell, Blueprint } from "@/components/bento";
 import { ShopIcon } from "@/components/shop-icon";
 import { ShopActions } from "@/components/shop-actions";
 import { shopItems, getShopItem, formatPrice } from "@/lib/shop";
-import { site } from "@/lib/site";
+import { site, imagery } from "@/lib/site";
 
 // Next 15+ passes route params as a Promise — they must be awaited.
 type Props = { params: Promise<{ slug: string }> };
@@ -26,6 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export default async function ShopItemPage({ params }: Props) {
   const { slug } = await params;
   const item = getShopItem(slug);
@@ -37,148 +38,153 @@ export default async function ShopItemPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={item.category} title={item.name} lead={item.summary}>
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="rounded-[3px] border border-line px-2.5 py-1 text-xs text-muted-foreground">
+      <PageHeader
+        eyebrow={item.category}
+        title={item.name}
+        lead={item.summary}
+        photo={imagery.headers.shop}
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="hud-chip">
             {item.kind === "service" ? "Service" : "Hardware"}
           </span>
-          {item.leadTime && (
-            <span className="rounded-[3px] border border-line px-2.5 py-1 text-xs text-muted-foreground">
-              {item.leadTime}
-            </span>
-          )}
+          {item.leadTime && <span className="hud-chip">{item.leadTime}</span>}
         </div>
       </PageHeader>
 
-      <div className="mx-auto max-w-5xl px-5 py-14">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
-          {/* description */}
-          <div>
-            <Reveal>
-              <div className="grid place-items-center rounded-[8px] border border-line bg-surface-muted py-12">
-                <span className="anim-float size-28 text-accent sm:size-36">
-                  <ShopIcon slug={item.slug} />
-                </span>
-              </div>
-            </Reveal>
+      <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
+        <Bento>
+          {/* the item */}
+          <Cell
+            variant="grid"
+            className="min-h-[340px] lg:col-span-4"
+            hud={{ tl: <>Item</>, tr: <>{item.slug}</> }}
+          >
+            <Blueprint className="text-line-strong opacity-60" />
+            <div className="grid flex-1 place-items-center py-6">
+              <span className="anim-float size-32 text-accent sm:size-40">
+                <ShopIcon slug={item.slug} />
+              </span>
+            </div>
+          </Cell>
 
-            <Reveal delay={100}>
-              <h2 className="mt-10 text-xs font-semibold tracking-wider text-subtle-foreground uppercase">
-                Overview
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-pretty">
-                {item.description}
-              </p>
-            </Reveal>
-
-            {item.specs && (
-              <Reveal delay={140}>
-                <h2 className="mt-10 text-xs font-semibold tracking-wider text-subtle-foreground uppercase">
-                  Specification
-                </h2>
-                <dl className="mt-4 divide-y divide-[var(--border)] border-y border-line">
-                  {item.specs.map((s) => (
-                    <div
-                      key={s.label}
-                      className="flex flex-col gap-1 py-3 sm:flex-row sm:gap-6"
-                    >
-                      <dt className="text-sm text-muted-foreground sm:w-44 sm:shrink-0">
-                        {s.label}
-                      </dt>
-                      <dd className="text-sm">{s.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <p className="mt-3 text-xs text-subtle-foreground">
-                  Specifications are indicative. Exact make and model confirmed
-                  on quotation.
-                </p>
-              </Reveal>
-            )}
-          </div>
+          <Cell
+            className="min-h-[340px] lg:col-span-4"
+            hud={{ tl: <>Overview</> }}
+          >
+            <p className="mt-6 text-lg leading-relaxed text-pretty">
+              {item.description}
+            </p>
+          </Cell>
 
           {/* buy box */}
-          <Reveal as="section" delay={80}>
-            <aside className="rounded-[8px] border border-line bg-surface p-6 lg:sticky lg:top-24">
-              <p className="text-2xl font-bold tracking-tight">
-                {formatPrice(item)}
+          <Cell
+            variant="paper"
+            className="min-h-[340px] lg:col-span-4"
+            hud={{ tl: <>Quote</>, tr: <>No charge here</> }}
+          >
+            <p className="font-display mt-6 text-3xl font-bold tracking-tight">
+              {formatPrice(item)}
+            </p>
+            {item.price === undefined && (
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                Pricing depends on specification, quantity and current supply.
               </p>
-              {item.price === undefined && (
-                <p className="mt-1.5 text-sm text-muted-foreground">
-                  Pricing depends on specification, quantity and current supply.
-                </p>
-              )}
+            )}
+            <div className="mt-6">
+              <ShopActions slug={item.slug} />
+            </div>
+            <p className="mt-auto pt-6 text-sm text-muted-foreground">
+              Prefer to talk it through?{" "}
+              <a
+                href={`tel:${site.contact.phoneTel}`}
+                className="rounded-[3px] font-medium text-foreground underline underline-offset-4"
+              >
+                {site.contact.phone}
+              </a>
+            </p>
+          </Cell>
 
-              <div className="mt-6">
-                <ShopActions slug={item.slug} />
-              </div>
-
-              <ul className="mt-6 space-y-2 border-t border-line pt-5">
-                {item.highlights.map((h) => (
-                  <li
-                    key={h}
-                    className="flex gap-2.5 text-sm text-muted-foreground"
-                  >
-                    <span aria-hidden className="text-accent">
-                      —
-                    </span>
-                    <span>{h}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p className="mt-6 border-t border-line pt-5 text-sm text-muted-foreground">
-                Prefer to talk it through?{" "}
-                <a
-                  href={`tel:${site.contact.phoneTel}`}
-                  className="rounded-[3px] font-medium text-foreground underline underline-offset-4"
-                >
-                  {site.contact.phone}
-                </a>
-              </p>
-            </aside>
-          </Reveal>
-        </div>
-
-        {/* related */}
-        {related.length > 0 && (
-          <section className="mt-20 border-t border-line pt-14">
-            <Reveal>
-              <h2 className="text-2xl font-bold tracking-tight">
-                Others in {item.category.toLowerCase()}
-              </h2>
-            </Reveal>
-            <ul className="mt-8 grid gap-4 sm:grid-cols-3">
-              {related.map((r, i) => (
-                <Reveal as="li" key={r.slug} delay={i * 70}>
-                  <Link
-                    href={`/shop/${r.slug}`}
-                    className="tilt group flex h-full flex-col rounded-[8px] border border-line bg-surface p-5 hover:border-line-strong"
-                  >
-                    <span className="size-9 text-accent">
-                      <ShopIcon slug={r.slug} />
-                    </span>
-                    <h3 className="mt-4 font-semibold tracking-tight">
-                      {r.name}
-                    </h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                      {r.summary}
-                    </p>
-                  </Link>
-                </Reveal>
+          {/* highlights */}
+          <Cell
+            variant="muted"
+            className={`min-h-[220px] ${item.specs ? "lg:col-span-4" : "lg:col-span-12"}`}
+            hud={{ tl: <>In short</>, tr: <>{pad(item.highlights.length)} points</> }}
+          >
+            <ul className="mt-6 space-y-2.5">
+              {item.highlights.map((h) => (
+                <li key={h} className="flex gap-2.5 text-sm text-muted-foreground">
+                  <span aria-hidden className="text-accent">
+                    —
+                  </span>
+                  <span>{h}</span>
+                </li>
               ))}
             </ul>
-          </section>
-        )}
+          </Cell>
 
-        <section className="mt-14 border-t border-line pt-8">
-          <Link
-            href="/shop"
-            className="rounded-[3px] text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            ← Back to shop
-          </Link>
-        </section>
+          {item.specs && (
+            <Cell
+              className="min-h-[220px] lg:col-span-8"
+              hud={{ tl: <>Specification</>, tr: <>Indicative</> }}
+            >
+              <dl className="mt-5 divide-y divide-[var(--border)]">
+                {item.specs.map((s) => (
+                  <div
+                    key={s.label}
+                    className="flex flex-col gap-1 py-3 sm:flex-row sm:gap-6"
+                  >
+                    <dt className="hud sm:w-44 sm:shrink-0">{s.label}</dt>
+                    <dd className="text-sm">{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="hud mt-4">
+                Exact make and model confirmed on quotation.
+              </p>
+            </Cell>
+          )}
+
+          {/* related */}
+          {related.length > 0 && (
+            <>
+              <Cell
+                variant="grid"
+                className="min-h-[200px] lg:col-span-3"
+                hud={{ tl: <>Related</> }}
+              >
+                <h2 className="mt-auto text-2xl leading-tight font-bold tracking-tight">
+                  Others in {item.category.toLowerCase()}
+                </h2>
+              </Cell>
+              {related.map((r, i) => (
+                <Cell
+                  key={r.slug}
+                  href={`/shop/${r.slug}`}
+                  delay={i * 70}
+                  className="min-h-[200px] sm:col-span-4 lg:col-span-3"
+                  hud={{ tl: <>R-{pad(i + 1)}</> }}
+                >
+                  <span className="mt-4 size-9 text-accent">
+                    <ShopIcon slug={r.slug} />
+                  </span>
+                  <div className="mt-auto pt-4">
+                    <h3 className="font-semibold tracking-tight">{r.name}</h3>
+                    <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                      {r.summary}
+                    </p>
+                  </div>
+                </Cell>
+              ))}
+            </>
+          )}
+
+          <Cell href="/shop" flush className="min-h-0 lg:col-span-12">
+            <p className="hud px-6 py-4">
+              <b>← Back to shop</b>
+            </p>
+          </Cell>
+        </Bento>
       </div>
     </>
   );

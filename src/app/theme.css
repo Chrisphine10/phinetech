@@ -1,0 +1,507 @@
+/* ==========================================================================
+   Mission-control theme and bento system
+   --------------------------------------------------------------------------
+   Monochrome on purpose: near-black ground, graphite panels, hairline rules
+   and off-white type, with the logo red kept as the single signal colour.
+   DARK is the primary expression; the root layout sets data-theme="dark"
+   unless the visitor has chosen light.
+
+   Loaded after globals.css, which still owns the Tailwind token mapping and
+   the original motion utilities.
+   ========================================================================== */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: #090909;
+  --foreground: #ecece8;
+
+  --surface: #121212;
+  --surface-muted: #171717;
+  --surface-hover: #202020;
+  --surface-inverse: #e6e6e2;
+  --foreground-inverse: #0b0b0b;
+
+  --border: #262626;
+  --border-strong: #3d3d3d;
+
+  --muted-foreground: #a4a4a0;
+  --subtle-foreground: #7a7a76;
+
+  --primary: #ecece8;
+  --primary-hover: #ffffff;
+  --primary-foreground: #0b0b0b;
+
+  --accent: #e2564f;
+  --accent-hover: #ee9691;
+  --accent-foreground: #0b0b0b;
+  --accent-subtle: #2a1110;
+
+  /* The logo exists only in its navy colourway, so it sits on a light plate. */
+  --logo-plate: #ffffff;
+  --logo-plate-ring: rgb(255 255 255 / 0.14);
+
+  --panel-glow: rgb(255 255 255 / 0.06);
+  --sheen: rgb(255 255 255 / 0.09);
+  --photo-filter: grayscale(1) contrast(1.12) brightness(0.82);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 8px 30px rgb(0 0 0 / 0.35);
+  --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.5), 0 14px 40px rgb(0 0 0 / 0.6);
+}
+
+/* Light: the pale blueprint card from the same system. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --background: #dededa;
+  --foreground: #101010;
+
+  --surface: #ebebe7;
+  --surface-muted: #e3e3df;
+  --surface-hover: #d4d4cf;
+  --surface-inverse: #101010;
+  --foreground-inverse: #ecece8;
+
+  --border: #c4c4be;
+  --border-strong: #a2a29c;
+
+  --muted-foreground: #4b4b47;
+  --subtle-foreground: #6c6c67;
+
+  --primary: #101010;
+  --primary-hover: #000000;
+  --primary-foreground: #ecece8;
+
+  --accent: #b12724;
+  --accent-hover: #8e1f1d;
+  --accent-foreground: #ffffff;
+  --accent-subtle: #f0d6d3;
+
+  --logo-plate: transparent;
+  --logo-plate-ring: transparent;
+
+  --panel-glow: rgb(255 255 255 / 0.5);
+  --sheen: rgb(255 255 255 / 0.55);
+  --photo-filter: grayscale(1) contrast(1.08);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.08);
+  --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.1), 0 14px 36px rgb(0 0 0 / 0.16);
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), var(--font-inter), ui-sans-serif, sans-serif;
+}
+
+/* Page-wide film grain, so flat panels have some air. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E");
+}
+
+/* In the components layer so Tailwind utilities (col-span, min-h, p-*) on a
+   cell always win over these defaults. Unlayered rules would beat them. */
+@layer components {
+  /* ------------------------------- the grid -------------------------------- */
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    gap: 12px;
+  }
+  @media (min-width: 1024px) {
+    .bento {
+      gap: 14px;
+    }
+  }
+
+  .cell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    grid-column: span 12;
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    padding: 22px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    box-shadow: inset 0 1px 0 var(--panel-glow);
+    transition:
+      border-color 0.35s ease,
+      transform 0.5s var(--ease-brand),
+      box-shadow 0.35s ease;
+  }
+  @media (min-width: 640px) {
+    .cell {
+      padding: 26px;
+    }
+  }
+  a.cell:hover,
+  .cell--hover:hover {
+    border-color: var(--border-strong);
+    box-shadow:
+      inset 0 1px 0 var(--panel-glow),
+      var(--shadow-card);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a.cell:hover,
+    .cell--hover:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  /* Pointer-follow sheen, driven by --mx/--my from BentoGlow. */
+  .cell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 0%),
+      var(--sheen),
+      transparent 60%
+    );
+  }
+  .cell:hover::after {
+    opacity: 1;
+  }
+
+  .cell--flush {
+    padding: 0;
+  }
+  .cell--muted {
+    background-color: var(--surface-muted);
+  }
+
+  /* The pale blueprint card. Fixed colours: it is "paper" in both themes. */
+  .cell--paper {
+    --foreground: #101010;
+    --muted-foreground: #4b4b47;
+    --subtle-foreground: #6c6c67;
+    --border: #c4c4be;
+    --border-strong: #a2a29c;
+    --accent: #b12724;
+    --sheen: rgb(255 255 255 / 0.6);
+    color: #101010;
+    background-color: #e4e4e0;
+    border-color: #cfcfca;
+  }
+
+  /* Blueprint construction lines. */
+  .cell--grid::before,
+  .blueprint {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-position: center;
+    opacity: 0.55;
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 40%, transparent 100%);
+  }
+
+  /* Photograph panel: greyscale, slow push-in, readable scrim. */
+  .cell-photo {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: var(--photo-filter);
+    transition: filter 0.6s ease;
+    animation: photo-drift 26s ease-in-out infinite alternate;
+  }
+  .cell:hover .cell-photo {
+    filter: grayscale(0.5) contrast(1.1) brightness(0.9);
+  }
+  .cell-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.88) 0%,
+      rgb(0 0 0 / 0.35) 45%,
+      rgb(0 0 0 / 0.55) 100%
+    );
+  }
+  .cell--photo {
+    --foreground: #f1f1ed;
+    --muted-foreground: #cfcfcb;
+    --subtle-foreground: #b0b0ac;
+    --border: rgb(255 255 255 / 0.2);
+    --border-strong: rgb(255 255 255 / 0.4);
+    --sheen: rgb(255 255 255 / 0.09);
+    color: #f1f1ed;
+    background-color: #0b0b0b;
+  }
+  @keyframes photo-drift {
+    from {
+      transform: scale(1.04) translate3d(0, 0, 0);
+    }
+    to {
+      transform: scale(1.13) translate3d(-1.5%, -1.5%, 0);
+    }
+  }
+
+  /* --------------------------------- HUD ----------------------------------- */
+
+  .hud {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    line-height: 1.55;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--subtle-foreground);
+  }
+  .hud b,
+  .hud strong {
+    font-weight: 500;
+    color: var(--foreground);
+  }
+  .hud-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 3px 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--foreground);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .signal {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent);
+    animation: signal 2.2s ease-out infinite;
+  }
+  @keyframes signal {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 9px transparent;
+    }
+  }
+
+  /* Mono capitals for display lines, with the "+++++" rule from the lockup. */
+  .lockup {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.14;
+    font-weight: 400;
+  }
+  .plus-rule {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    letter-spacing: 0.06em;
+    color: var(--subtle-foreground);
+    user-select: none;
+  }
+
+  /* Chrome type: brushed-metal fill with a travelling highlight and a glow. */
+  .chrome {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-display), var(--font-inter), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    color: transparent;
+    background-image:
+      linear-gradient(100deg, transparent 38%, rgb(255 255 255 / 0.95) 50%, transparent 62%),
+      linear-gradient(180deg, #fafafa 0%, #8d8d8d 38%, #1f1f1f 52%, #b9b9b9 62%, #5d5d5d 100%);
+    background-size:
+      250% 100%,
+      100% 100%;
+    background-position:
+      130% 0,
+      0 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 1px rgb(255 255 255 / 0.28);
+    filter: drop-shadow(0 0 18px rgb(255 255 255 / 0.22));
+    animation: chrome-sweep 5.5s var(--ease-brand) infinite;
+  }
+  @keyframes chrome-sweep {
+    0%,
+    18% {
+      background-position:
+        130% 0,
+        0 0;
+    }
+    60%,
+    100% {
+      background-position:
+        -40% 0,
+        0 0;
+    }
+  }
+  .chrome-flare {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow:
+      0 0 14px 5px rgb(255 255 255 / 0.85),
+      0 0 46px 14px rgb(255 255 255 / 0.35);
+    animation: flare 3.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.9s);
+  }
+  @keyframes flare {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: scale(0.6);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+  }
+
+  /* Scanline that sweeps a panel every few seconds. */
+  .scan {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .scan::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -30%;
+    height: 30%;
+    background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.08), transparent);
+    animation: scan 7s linear infinite;
+  }
+  @keyframes scan {
+    to {
+      transform: translateY(480%);
+    }
+  }
+
+  /* Hovering craft. */
+  @keyframes hover-craft {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(-1.2deg);
+    }
+    50% {
+      transform: translate3d(6px, -14px, 0) rotate(1.4deg);
+    }
+  }
+  .anim-craft {
+    animation: hover-craft 6s ease-in-out infinite;
+  }
+
+  @keyframes rotate-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .anim-rotate {
+    animation: rotate-slow 60s linear infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .anim-rotate-rev {
+    animation: rotate-slow 90s linear infinite reverse;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes bar-rise {
+    0%,
+    100% {
+      transform: scaleY(0.3);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+  .barcode {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .barcode span {
+    display: block;
+    width: 3px;
+    height: 100%;
+    background: currentColor;
+    transform-origin: bottom;
+    animation: bar-rise 2.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.13s);
+  }
+
+  @keyframes route-flow {
+    to {
+      stroke-dashoffset: -64;
+    }
+  }
+  .anim-route {
+    stroke-dasharray: 4 12;
+    animation: route-flow 2.2s linear infinite;
+  }
+}
+
+/* Existing cards across the site pick up the panel look. */
+.tilt {
+  border-radius: 18px !important;
+  box-shadow: inset 0 1px 0 var(--panel-glow);
+}
+
+/* ReactDrops fan gallery: greyscale to match, colour on hover. */
+.fan-gallery-card img {
+  filter: var(--photo-filter);
+  transition: filter 0.5s ease;
+}
+.fan-gallery-card:hover img {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell-photo,
+  .chrome,
+  .chrome-flare,
+  .scan::after,
+  .anim-craft,
+  .anim-rotate,
+  .anim-rotate-rev,
+  .barcode span,
+  .anim-route,
+  .signal {
+    animation: none !important;
+  }
+}

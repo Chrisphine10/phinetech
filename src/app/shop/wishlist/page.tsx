@@ -16,7 +16,8 @@ export default function WishlistPage() {
         title="Saved items"
         lead="Items you have set aside to decide on later. These are stored in this browser only — they are not sent anywhere until you ask for a quote."
       />
-      <div className="mx-auto max-w-5xl px-5 py-14">
+      {/* WishlistView lays itself out as bento cells. */}
+      <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
         <WishlistView />
       </div>
     </>

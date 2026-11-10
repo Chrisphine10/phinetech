@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
-import { Reveal } from "@/components/reveal";
+import { Bento, Cell } from "@/components/bento";
 import { ShopCard } from "@/components/shop-card";
 import { shopItems, shopCategories } from "@/lib/shop";
 
@@ -10,6 +10,23 @@ export const metadata: Metadata = {
   description:
     "POS hardware, computing equipment and packaged services from PhineTech — terminals, cash drawers, barcode scanners, receipt printers, desktops and monitors, plus web development and POS deployment.",
 };
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+const steps = [
+  {
+    t: "Build a cart",
+    b: "Add the hardware and services you are considering. Nothing is charged and nothing is committed.",
+  },
+  {
+    t: "Send it to us",
+    b: "Your cart becomes an enquiry. We confirm availability, current pricing and lead times.",
+  },
+  {
+    t: "We quote and deliver",
+    b: "You get a written quote. Approved orders are delivered, installed and configured.",
+  },
+];
 
 export default function ShopPage() {
   return (
@@ -24,7 +41,7 @@ export default function ShopPage() {
             <a
               key={c}
               href={`#${slugify(c)}`}
-              className="rounded-[3px] border border-line px-3 py-1.5 text-sm transition-colors hover:bg-surface-hover"
+              className="hud-chip transition-colors hover:bg-surface-hover"
             >
               {c}
             </a>
@@ -32,8 +49,8 @@ export default function ShopPage() {
         </nav>
       </PageHeader>
 
-      <div className="mx-auto max-w-5xl px-5 py-14">
-        {shopCategories.map((category) => {
+      <div className="mx-auto max-w-7xl space-y-3 px-3 pt-3 pb-16 sm:px-5 lg:space-y-3.5 lg:pt-3.5">
+        {shopCategories.map((category, c) => {
           const items = shopItems.filter((i) => i.category === category);
           if (items.length === 0) return null;
 
@@ -41,65 +58,68 @@ export default function ShopPage() {
             <section
               key={category}
               id={slugify(category)}
-              className="mb-16 scroll-mt-24"
+              aria-label={category}
+              className="scroll-mt-24"
             >
-              <Reveal>
-                <div className="flex items-baseline justify-between gap-4 border-b border-line pb-4">
-                  <h2 className="text-2xl font-bold tracking-tight">
+              <Bento>
+                <Cell
+                  variant={c % 2 === 0 ? "paper" : "grid"}
+                  className="min-h-[150px] lg:col-span-12"
+                  hud={{
+                    tl: <>Aisle {pad(c + 1)}</>,
+                    tr: (
+                      <>
+                        {pad(items.length)}{" "}
+                        {items.length === 1 ? "item" : "items"}
+                      </>
+                    ),
+                  }}
+                >
+                  <h2 className="mt-auto pt-6 text-3xl font-bold tracking-tight sm:text-4xl">
                     {category}
                   </h2>
-                  <span className="text-sm text-muted-foreground">
-                    {items.length} {items.length === 1 ? "item" : "items"}
-                  </span>
-                </div>
-              </Reveal>
+                </Cell>
 
-              <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((item, i) => (
-                  <Reveal as="li" key={item.slug} delay={i * 60}>
-                    <ShopCard item={item} />
-                  </Reveal>
+                {items.map((item) => (
+                  <ShopCard
+                    key={item.slug}
+                    item={item}
+                    className="sm:col-span-6 lg:col-span-4"
+                  />
                 ))}
-              </ul>
+              </Bento>
             </section>
           );
         })}
 
         {/* how ordering works */}
-        <Reveal>
-          <section className="rounded-[8px] border border-line bg-surface-muted p-8 sm:p-10">
-            <h2 className="text-xl font-bold tracking-tight">
+        <Bento as="section">
+          <Cell
+            variant="muted"
+            className="min-h-[220px] lg:col-span-3"
+            hud={{ tl: <>Process</> }}
+          >
+            <h2 className="mt-auto text-2xl leading-tight font-bold tracking-tight">
               How ordering works
             </h2>
-            <ol className="mt-6 grid gap-6 sm:grid-cols-3">
-              {[
-                {
-                  n: "01",
-                  t: "Build a cart",
-                  b: "Add the hardware and services you are considering. Nothing is charged and nothing is committed.",
-                },
-                {
-                  n: "02",
-                  t: "Send it to us",
-                  b: "Your cart becomes an enquiry. We confirm availability, current pricing and lead times.",
-                },
-                {
-                  n: "03",
-                  t: "We quote and deliver",
-                  b: "You get a written quote. Approved orders are delivered, installed and configured.",
-                },
-              ].map((s) => (
-                <li key={s.n}>
-                  <span className="font-mono text-xs text-accent">{s.n}</span>
-                  <h3 className="mt-2 font-semibold tracking-tight">{s.t}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                    {s.b}
-                  </p>
-                </li>
-              ))}
-            </ol>
-
-            <p className="mt-8 border-t border-line pt-6 text-sm text-muted-foreground">
+          </Cell>
+          {steps.map((s, i) => (
+            <Cell
+              key={s.t}
+              delay={i * 90}
+              className="min-h-[220px] sm:col-span-4 lg:col-span-3"
+              hud={{ tl: <>Step {pad(i + 1)}</> }}
+            >
+              <div className="mt-auto pt-6">
+                <h3 className="font-semibold tracking-tight">{s.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {s.b}
+                </p>
+              </div>
+            </Cell>
+          ))}
+          <Cell flush className="min-h-0 lg:col-span-12">
+            <p className="px-6 py-4 text-sm text-muted-foreground">
               Prices depend on specification, quantity and current supply, so
               the shop quotes rather than charges.{" "}
               <Link
@@ -110,8 +130,8 @@ export default function ShopPage() {
               </Link>{" "}
               if you would rather just describe what you need.
             </p>
-          </section>
-        </Reveal>
+          </Cell>
+        </Bento>
       </div>
     </>
   );

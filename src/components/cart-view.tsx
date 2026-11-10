@@ -64,7 +64,7 @@ export function CartView() {
 
   if (lines.length === 0) {
     return (
-      <div className="rounded-[8px] border border-line bg-surface-muted px-8 py-16 text-center">
+      <div className="cell cell--muted cell--grid items-center px-8 py-16 text-center">
         <p className="text-lg font-medium">Your cart is empty</p>
         <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
           Add hardware or a packaged service and we will come back with a
@@ -81,8 +81,8 @@ export function CartView() {
   }
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
-      <div>
+    <div className="bento">
+      <div className="cell lg:col-span-8">
         {stale > 0 && (
           <p className="mb-5 rounded-[3px] border border-line bg-surface-muted px-4 py-3 text-sm text-muted-foreground">
             {stale} saved {stale === 1 ? "item is" : "items are"} no longer in
@@ -178,7 +178,7 @@ export function CartView() {
       </div>
 
       {/* summary */}
-      <aside className="rounded-[8px] border border-line bg-surface-muted p-6 lg:sticky lg:top-24 lg:self-start">
+      <aside className="cell cell--muted lg:sticky lg:top-24 lg:col-span-4 lg:self-start">
         <h2 className="font-semibold tracking-tight">Summary</h2>
 
         <dl className="mt-4 space-y-2 border-b border-line pb-4 text-sm">
