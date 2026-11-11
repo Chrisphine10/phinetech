@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/page-header";
 import { Bento, Cell, Blueprint } from "@/components/bento";
 import { ShopIcon } from "@/components/shop-icon";
 import { ShopActions } from "@/components/shop-actions";
+import { ProductShot } from "@/components/product-shot";
 import { shopItems, getShopItem, formatPrice } from "@/lib/shop";
 import { site, imagery } from "@/lib/site";
 
@@ -55,17 +56,23 @@ export default async function ShopItemPage({ params }: Props) {
       <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
         <Bento>
           {/* the item */}
-          <Cell
-            variant="grid"
-            className="min-h-[340px] lg:col-span-4"
-            hud={{ tl: <>Item</>, tr: <>{item.slug}</> }}
-          >
-            <Blueprint className="text-line-strong opacity-60" />
-            <div className="grid flex-1 place-items-center py-6">
-              <span className="anim-float size-32 text-accent sm:size-40">
-                <ShopIcon slug={item.slug} />
-              </span>
-            </div>
+          <Cell flush className="min-h-[340px] lg:col-span-4">
+            {imagery.shop[item.slug] ? (
+              <ProductShot
+                photo={imagery.shop[item.slug]!}
+                priority
+                className="shot--tall flex-1"
+                label={<>Illustrative image</>}
+                tag={item.kind === "service" ? "Service" : "Hardware"}
+              />
+            ) : (
+              <div className="grid flex-1 place-items-center py-6">
+                <Blueprint className="text-line-strong opacity-60" />
+                <span className="anim-float size-32 text-accent sm:size-40">
+                  <ShopIcon slug={item.slug} />
+                </span>
+              </div>
+            )}
           </Cell>
 
           <Cell
@@ -163,12 +170,16 @@ export default async function ShopItemPage({ params }: Props) {
                   href={`/shop/${r.slug}`}
                   delay={i * 70}
                   className="min-h-[200px] sm:col-span-4 lg:col-span-3"
-                  hud={{ tl: <>R-{pad(i + 1)}</> }}
+                  flush
                 >
-                  <span className="mt-4 size-9 text-accent">
-                    <ShopIcon slug={r.slug} />
-                  </span>
-                  <div className="mt-auto pt-4">
+                  {imagery.shop[r.slug] && (
+                    <ProductShot
+                      photo={imagery.shop[r.slug]!}
+                      label={<>R-{pad(i + 1)}</>}
+                      sizes="(min-width: 1024px) 25vw, 100vw"
+                    />
+                  )}
+                  <div className="cell-body">
                     <h3 className="font-semibold tracking-tight">{r.name}</h3>
                     <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                       {r.summary}

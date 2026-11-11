@@ -3,9 +3,9 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { Bento, Cell } from "@/components/bento";
 import { ProductLogo } from "@/components/product-logo";
-import { ProductGlyph } from "@/components/product-glyph";
+import { ProductShot } from "@/components/product-shot";
 import { ArchitectureDiagram } from "@/components/architecture-diagram";
-import { products, projects } from "@/lib/site";
+import { products, projects, imagery } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -32,57 +32,75 @@ export default function ProductsPage() {
 
       <div className="mx-auto max-w-7xl px-3 pt-3 pb-16 sm:px-5 lg:pt-3.5">
         <Bento>
-          {products.map((product, i) => (
-            <Cell
-              key={product.slug}
-              href={`/products/${product.slug}`}
-              delay={(i % 2) * 90}
-              className={`min-h-[380px] ${i === 0 ? "lg:col-span-8" : i === 1 ? "lg:col-span-4" : "sm:col-span-6 lg:col-span-4"}`}
-              hud={{
-                tl: <>{product.category}</>,
-                tr: (
-                  <span className="hud-chip">
-                    <span className="signal" />
-                    {product.status}
-                  </span>
-                ),
-              }}
-            >
-              {/* drawn glyph, large and faint, behind the copy */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -right-6 -bottom-6 -z-10 size-56 text-line-strong opacity-70"
+          {products.map((product, i) => {
+            const photo = imagery.projects[product.slug];
+            // The first product leads as a wide panel with the photo beside
+            // the copy; the rest stack the photo on top.
+            const lead = i === 0;
+            return (
+              <Cell
+                key={product.slug}
+                href={`/products/${product.slug}`}
+                delay={(i % 2) * 90}
+                flush
+                className={`min-h-[420px] ${
+                  lead
+                    ? "lg:col-span-8 lg:flex-row"
+                    : i === 1
+                      ? "lg:col-span-4"
+                      : "sm:col-span-6"
+                }`}
               >
-                <ProductGlyph slug={product.slug} />
-              </span>
-
-              <div className="mt-6">
-                <ProductLogo product={product} height={46} />
-              </div>
-              <h2 className="mt-5 text-2xl font-bold tracking-tight">
-                {product.name}
-              </h2>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                {product.summary}
-              </p>
-              <ul className="mt-auto flex flex-wrap gap-1.5 pt-6">
-                {product.highlights.map((h) => (
-                  <li key={h} className="hud-chip whitespace-normal">
-                    {h}
-                  </li>
-                ))}
-              </ul>
-              <span className="hud mt-4 block">
-                <b>Details →</b>
-                {product.hrefLabel && <> / {product.hrefLabel}</>}
-              </span>
-            </Cell>
-          ))}
+                {photo && (
+                  <ProductShot
+                    photo={photo}
+                    priority={i < 2}
+                    label={
+                      <>
+                        P-{pad(i + 1)} / <b>{product.category}</b>
+                      </>
+                    }
+                    tag={
+                      <>
+                        <span className="signal" />
+                        {product.status}
+                      </>
+                    }
+                    className={lead ? "lead-shot" : ""}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                )}
+                <div className="cell-body">
+                  <ProductLogo product={product} height={44} />
+                  <h2 className="mt-5 text-2xl font-bold tracking-tight">
+                    {product.name}
+                  </h2>
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                    {product.summary}
+                  </p>
+                  <ul className="mt-auto flex flex-wrap gap-1.5 pt-6">
+                    {product.highlights.map((h) => (
+                      <li key={h} className="hud-chip whitespace-normal">
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                  <span className="hud mt-4 block">
+                    <b>Details →</b>
+                    {product.hrefLabel && <> / {product.hrefLabel}</>}
+                  </span>
+                </div>
+              </Cell>
+            );
+          })}
 
           <Cell
             variant="grid"
             className="lg:col-span-12"
-            hud={{ tl: <>Schematic</>, tr: <>{pad(products.length)} products / one foundation</> }}
+            hud={{
+              tl: <>Schematic</>,
+              tr: <>{pad(products.length)} products / one foundation</>,
+            }}
           >
             <div className="mt-6">
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">

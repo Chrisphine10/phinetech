@@ -5,6 +5,7 @@ import { Bento, Cell, Route } from "@/components/bento";
 import { ChromeCta } from "@/components/drops-client";
 import { DomainIcon } from "@/components/domain-icon";
 import { ProjectMark } from "@/components/project-mark";
+import { ProductShot } from "@/components/product-shot";
 import {
   domains,
   projects,
@@ -40,6 +41,7 @@ function ProjectCell({
   delay: number;
 }) {
   const href = project.product ? `/products/${project.product}` : project.href;
+  const photo = imagery.projects[project.slug];
 
   return (
     <Cell
@@ -47,38 +49,42 @@ function ProjectCell({
       href={href}
       delay={delay}
       hover
+      flush
       className={`min-h-[280px] ${span}`}
-      hud={{
-        tl: <>{project.role}</>,
-        tr: (
-          <span className="hud-chip">
-            <span className="signal" />
-            {project.status}
-          </span>
-        ),
-      }}
     >
-      <div className="mt-6">
-        <ProjectMark project={project} height={40} />
-      </div>
-      <h3 className="mt-4 text-xl font-semibold tracking-tight">
-        {project.name}
-      </h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        {project.summary}
-      </p>
-      <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-5">
-        {project.platforms.map((platform) => (
-          <span key={platform} className="hud-chip">
-            {platform}
-          </span>
-        ))}
-        <span className="flex-1" />
-        {href && (
-          <span className="hud">
-            <b>{project.product ? "Details →" : `${project.hrefLabel} ↗`}</b>
-          </span>
-        )}
+      {photo && (
+        <ProductShot
+          photo={photo}
+          label={<>{project.role}</>}
+          tag={
+            <>
+              <span className="signal" />
+              {project.status}
+            </>
+          }
+        />
+      )}
+      <div className="cell-body">
+        <ProjectMark project={project} height={36} />
+        <h3 className="mt-4 text-xl font-semibold tracking-tight">
+          {project.name}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          {project.summary}
+        </p>
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-5">
+          {project.platforms.map((platform) => (
+            <span key={platform} className="hud-chip">
+              {platform}
+            </span>
+          ))}
+          <span className="flex-1" />
+          {href && (
+            <span className="hud">
+              <b>{project.product ? "Details →" : `${project.hrefLabel} ↗`}</b>
+            </span>
+          )}
+        </div>
       </div>
     </Cell>
   );

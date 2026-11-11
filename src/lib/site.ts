@@ -491,8 +491,8 @@ export const frontiers: Frontier[] = [
     title: "Marine exploration",
     aim: "African teams charting their own waters with underwater drones: mapping the seabed, watching reefs and fisheries, and inspecting ports, cables and pipelines. The continent has a long coastline and great lakes, and knows very little of what lies beneath them.",
     today:
-      "No marine project yet, and we say so. What carries over is the software: the autonomy, telemetry, mapping and video pipelines that fly a survey drone are the ones that steer one underwater, and the private networks from our alliances carry the data ashore.",
-    projects: [],
+      "A marine drone programme at concept stage, with nothing in the water yet. What carries over is the software: the autonomy, telemetry, mapping and video pipelines that fly a survey drone are the ones that steer one underwater, and the private networks from our alliances carry the data ashore.",
+    projects: ["marine-drones"],
   },
 ];
 
@@ -551,6 +551,12 @@ export const domains: Domain[] = [
       "Tools that bring people into the same room, in their own languages.",
   },
   {
+    slug: "exploration-survey",
+    title: "Exploration and survey",
+    summary:
+      "Drones that go where people cannot easily go: under the water first, to map, inspect and monitor.",
+  },
+  {
     slug: "digital-infrastructure",
     title: "Digital infrastructure and AI",
     summary:
@@ -564,7 +570,7 @@ export type Project = {
   domain: string;
   /** PhineTech's part in it. Shown on the card — be exact about ownership. */
   role: string;
-  status: "Live" | "In development" | "Pilot";
+  status: "Live" | "In development" | "Pilot" | "Concept";
   summary: string;
   /** What it is delivered as. */
   platforms: string[];
@@ -732,6 +738,17 @@ export const projects: Project[] = [
     monogram: "GN",
     href: "https://goons.phinetech.co.ke",
     hrefLabel: "goons.phinetech.co.ke",
+  },
+  {
+    slug: "marine-drones",
+    name: "Marine drones",
+    domain: "exploration-survey",
+    role: "PhineTech research programme",
+    status: "Concept",
+    summary:
+      "Underwater drones for seabed mapping, reef and fishery monitoring, and inspection of ports, cables and pipelines. At concept stage: we are defining the vehicle, the control software and the data pipeline, and looking for partners.",
+    platforms: ["Underwater vehicle", "Control software"],
+    monogram: "MD",
   },
   {
     slug: "tari-studio",
@@ -950,6 +967,54 @@ export const imagery = {
     "safety-response": photo("ambulance.jpg", "An ambulance driving with its lights on"),
     "mobility-planning": photo("traffic.jpg", "A highway into a city at night"),
     "digital-infrastructure": photo("server.jpg", "Network cabling in a server rack"),
+    "exploration-survey": photo(
+      "marine.jpg",
+      "A diver surveying the seabed with an underwater camera rig",
+      "center 40%",
+    ),
+  } as Record<string, Photo | undefined>,
+
+  /**
+   * One picture per project, keyed by project slug (products share the slug).
+   * Stock photographs showing the setting each system works in. Illustrative:
+   * none of them is a picture of the product itself.
+   */
+  projects: {
+    "intellicash-sacco": photo("products/intellicash-sacco.jpg", "Hands counting banknotes at a counter"),
+    "intellicash-vsla": photo("products/intellicash-vsla.jpg", "Women gathered for a village meeting", "center 30%"),
+    pos: photo("products/pos.jpg", "A customer paying by card at a shop counter"),
+    kulaos: photo("products/kulaos.jpg", "A chef preparing food in a restaurant kitchen"),
+    raut: photo("products/raut.jpg", "Boxes being loaded into a delivery van"),
+    "tari-electra": photo("products/tari-electra.jpg", "A bank of electricity meters"),
+    classcompass: photo("products/classcompass.jpg", "A teacher instructing students in a classroom"),
+    "vr-labs-africa": photo("products/vr-labs-africa.jpg", "A boy wearing a virtual-reality headset"),
+    hodi: photo("products/hodi.jpg", "A person using a smartphone in low light"),
+    trubai: photo("products/trubai.jpg", "Traffic on a city avenue seen from above"),
+    goons: photo("products/goons.jpg", "A hand of playing cards during a game"),
+    "tari-studio": photo("products/tari-studio.jpg", "A camera on a tripod in a studio"),
+    "phinetech-cloud": photo("products/phinetech-cloud.jpg", "Server racks in a data centre"),
+    "marine-drones": photo(
+      "products/marine-drones.jpg",
+      "A research submersible with thrusters and a manipulator arm",
+      "center 72%",
+    ),
+  } as Record<string, Photo | undefined>,
+
+  /** One picture per shop item, keyed by shop slug. Illustrative. */
+  shop: {
+    "web-development": photo("shop/web-development.jpg", "Code on a laptop screen"),
+    "pos-system": photo("shop/pos-system.jpg", "A point-of-sale system on a shop counter"),
+    "etims-onboarding": photo("shop/etims-onboarding.jpg", "A payment terminal printing a paper receipt"),
+    "cloud-setup": photo("shop/cloud-setup.jpg", "Cabling in a server rack"),
+    "pos-terminal": photo("shop/pos-terminal.jpg", "A touchscreen till in use in a shop"),
+    "customer-display": photo("shop/customer-display.jpg", "A customer at a counter beside a display"),
+    "cash-drawer": photo("shop/cash-drawer.jpg", "Tills with cash drawers at a checkout"),
+    "barcode-scanner": photo("shop/barcode-scanner.jpg", "A handheld barcode scanner in use"),
+    "barcode-scanner-wireless": photo("shop/barcode-scanner-wireless.jpg", "A wireless barcode scanner in its charging dock"),
+    "receipt-printer": photo("shop/receipt-printer.jpg", "A receipt printer beside a tablet till"),
+    "label-printer": photo("shop/label-printer.jpg", "A label printer beside shipping boxes"),
+    "desktop-computer": photo("shop/desktop-computer.jpg", "A desktop computer set-up on a desk"),
+    monitor: photo("shop/monitor.jpg", "A computer monitor on a desk"),
   } as Record<string, Photo | undefined>,
 
   /** Keyed by frontier slug. */
@@ -985,6 +1050,7 @@ export const imagery = {
     photo("market.jpg", "Market trader with a phone"),
     photo("earth.jpg", "Earth at night from orbit"),
     photo("marine.jpg", "Diver surveying the seabed"),
+    photo("products/marine-drones.jpg", "Research submersible"),
   ],
 };
 

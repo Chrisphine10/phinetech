@@ -290,7 +290,12 @@ export default function Home() {
               delay={(i % 4) * 70}
               photo={photo}
               variant={photo ? "photo" : "grid"}
-              className="min-h-[290px] sm:col-span-6 lg:col-span-3"
+              className={`min-h-[290px] sm:col-span-6 ${
+                // A leftover panel on the last row runs the full width.
+                i === domains.length - 1 && domains.length % 4 === 1
+                  ? "lg:col-span-12"
+                  : "lg:col-span-3"
+              }`}
               hud={{ tl: <>D-{pad(i + 1)}</>, tr: <>{pad(list.length)} live</> }}
             >
               <span className="mt-6 size-9 text-foreground">

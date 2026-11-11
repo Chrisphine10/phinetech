@@ -130,6 +130,7 @@ export function DomainIcon({ slug, className = "" }: Props) {
 
     /* A submersible under the waterline, with a sonar ping below it. */
     case "marine":
+    case "exploration-survey":
       return (
         <svg viewBox="0 0 48 48" className={box} aria-hidden>
           <path

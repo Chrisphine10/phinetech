@@ -476,6 +476,98 @@ body::before {
   }
 }
 
+/* Framed product photograph (ProductShot). */
+@layer components {
+  .shot {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background-color: #0b0b0b;
+    border-bottom: 1px solid var(--border);
+  }
+  .shot--tall {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 300px;
+    border-bottom: 0;
+  }
+  .shot-img {
+    object-fit: cover;
+    filter: var(--photo-filter);
+    transform: scale(1.02);
+    transition:
+      transform 1.4s var(--ease-brand),
+      filter 0.6s ease;
+  }
+  .cell:hover .shot-img,
+  .shot:hover .shot-img {
+    transform: scale(1.07);
+    filter: grayscale(0.25) contrast(1.06);
+  }
+  .shot-shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.6) 0%, transparent 42%);
+  }
+  .shot-scan {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .shot-scan::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -30%;
+    height: 30%;
+    background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.1), transparent);
+    animation: scan 9s linear infinite;
+  }
+  /* Corner registration marks: eight hairlines, two per corner. */
+  .shot-marks {
+    --m: rgb(255 255 255 / 0.75);
+    position: absolute;
+    inset: 10px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--m), var(--m)) top left / 14px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) top left / 1px 14px no-repeat,
+      linear-gradient(var(--m), var(--m)) top right / 14px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) top right / 1px 14px no-repeat,
+      linear-gradient(var(--m), var(--m)) bottom left / 14px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) bottom left / 1px 14px no-repeat,
+      linear-gradient(var(--m), var(--m)) bottom right / 14px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) bottom right / 1px 14px no-repeat;
+  }
+  .shot-label {
+    position: absolute;
+    left: 20px;
+    bottom: 16px;
+    color: #d6d6d2;
+  }
+  .shot-label b {
+    color: #ffffff;
+  }
+  .shot-tag {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    color: #f1f1ed;
+    border-color: rgb(255 255 255 / 0.45);
+    background: rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(6px);
+  }
+  .cell-body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 20px 22px 22px;
+  }
+}
+
 /* Existing cards across the site pick up the panel look. */
 .tilt {
   border-radius: 18px !important;
@@ -496,6 +588,7 @@ body::before {
   .chrome,
   .chrome-flare,
   .scan::after,
+  .shot-scan::after,
   .anim-craft,
   .anim-rotate,
   .anim-rotate-rev,
@@ -503,5 +596,18 @@ body::before {
   .anim-route,
   .signal {
     animation: none !important;
+  }
+}
+
+/* Products page: the leading product puts its photograph beside the copy. */
+@layer components {
+  @media (min-width: 1024px) {
+    .lead-shot {
+      aspect-ratio: auto;
+      width: 50%;
+      flex: none;
+      border-bottom: 0;
+      border-right: 1px solid var(--border);
+    }
   }
 }

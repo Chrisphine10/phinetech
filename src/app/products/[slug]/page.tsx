@@ -5,6 +5,7 @@ import { Bento, Cell, Blueprint } from "@/components/bento";
 import { ChromeCta } from "@/components/drops-client";
 import { ProductGlyph } from "@/components/product-glyph";
 import { ProductLogo } from "@/components/product-logo";
+import { ProductShot } from "@/components/product-shot";
 import { products, getProduct, site, imagery } from "@/lib/site";
 
 // Next 15+ passes route params as a Promise — they must be awaited.
@@ -81,17 +82,24 @@ export default async function ProductPage({ params }: Props) {
             </p>
           </Cell>
 
-          <Cell
-            variant="grid"
-            className="min-h-[340px] lg:col-span-3"
-            hud={{ tl: <>Mark</> }}
-          >
-            <Blueprint className="text-line-strong opacity-60" />
-            <div className="scene-3d grid flex-1 place-items-center py-4">
-              <div className="anim-float size-40 text-foreground opacity-90">
-                <ProductGlyph slug={product.slug} />
+          <Cell flush className="min-h-[340px] lg:col-span-3">
+            {imagery.projects[product.slug] ? (
+              <ProductShot
+                photo={imagery.projects[product.slug]!}
+                priority
+                className="shot--tall flex-1"
+                label={<>Illustrative image</>}
+                tag={product.category}
+                sizes="(min-width: 1024px) 25vw, 100vw"
+              />
+            ) : (
+              <div className="scene-3d grid flex-1 place-items-center py-4">
+                <Blueprint className="text-line-strong opacity-60" />
+                <div className="anim-float size-40 text-foreground opacity-90">
+                  <ProductGlyph slug={product.slug} />
+                </div>
               </div>
-            </div>
+            )}
           </Cell>
 
           <Cell
