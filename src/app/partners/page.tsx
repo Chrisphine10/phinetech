@@ -10,7 +10,7 @@ import { partners, alliances, products, imagery } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Partners",
   description:
-    "PhineTech partners with Tari Africa, GVRC, Intelli-Wealth Limited and TrubAI, and works with Telcore and Octagram through Tari Africa on the networks and building systems a smart city needs.",
+    "PhineTech partners with Tari Africa, GVRC, Intelli-Wealth Limited and TrubAI, and works with Telcore and Octagram through Tari Africa and with VinTech on the networks, building systems and IoT services and training a smart city needs.",
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -87,17 +87,22 @@ export default function PartnersPage() {
             id="alliances"
             className="min-h-[340px] scroll-mt-24 lg:col-span-12"
             photo={imagery.alliance}
-            hud={{ tl: <>Technology alliances</>, tr: <>Held under Tari Africa</> }}
+            hud={{
+              tl: <>Technology alliances</>,
+              tr: <>{pad(alliances.length)} partners</>,
+            }}
           >
             <div className="mt-auto max-w-2xl">
               <h2 className="text-3xl leading-tight font-bold tracking-tight text-balance sm:text-5xl">
-                The networks and buildings a smart city stands on
+                The networks, buildings and devices a smart city stands on
               </h2>
               <p className="mt-4 leading-relaxed text-pretty text-muted-foreground">
                 Software is one layer. A smart city also needs its own secure
-                connectivity and buildings that can be monitored and
-                controlled. For those we work, through Tari Africa, with two
-                technology partners, and build the applications and
+                connectivity, buildings that can be monitored and controlled,
+                and connected devices in the field with people trained to run
+                them. For the network and the buildings we work through Tari
+                Africa with Telcore and Octagram; for IoT services and training
+                we partner with VinTech. We build the applications and
                 integrations on top.
               </p>
             </div>
@@ -109,7 +114,11 @@ export default function PartnersPage() {
               delay={i * 100}
               variant="grid"
               hover
-              className="min-h-[460px] sm:col-span-6"
+              className={
+                alliances.length % 2 === 1 && i === alliances.length - 1
+                  ? "min-h-[340px] sm:col-span-12"
+                  : "min-h-[460px] sm:col-span-6"
+              }
               hud={{ tl: <>{a.relationship}</>, tr: <>{a.location}</> }}
             >
               <p className="lockup mt-8 text-4xl sm:text-5xl">{a.name}</p>
@@ -129,14 +138,16 @@ export default function PartnersPage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href={a.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hud mt-auto pt-6 hover:underline"
-              >
-                <b>{a.urlLabel} ↗</b>
-              </a>
+              {a.url && (
+                <a
+                  href={a.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hud mt-auto pt-6 hover:underline"
+                >
+                  <b>{a.urlLabel} ↗</b>
+                </a>
+              )}
             </Cell>
           ))}
 

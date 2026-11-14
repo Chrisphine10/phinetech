@@ -861,15 +861,18 @@ export const partners: Partner[] = [
 /* -------------------------------------------------------------------------- */
 
 /**
- * Technology partnerships held under Tari Africa.
+ * Technology partnerships. Telcore and Octagram are held under Tari Africa;
+ * VinTech partners with PhineTech directly.
  *
- * These are suppliers of infrastructure a smart city needs and that we do not
- * build ourselves: the network, and the building systems. PhineTech's part is
- * the software and integration on top.
+ * These are partners for infrastructure a smart city needs and that we do not
+ * build ourselves: the network, the building systems, and the IoT devices and
+ * skills in the field. PhineTech's part is the software and integration on top.
  *
  * REVIEW BEFORE PUBLISHING: confirm with Tari Africa and each company that the
  * partnership is agreed and may be named publicly, and that the wording of
  * `relationship` is right. No third-party logos are used here on purpose.
+ * VinTech: no website, logo or agreed wording supplied yet (2026-11-15), so
+ * the entry has no link and stays general.
  */
 export type Alliance = {
   slug: string;
@@ -883,8 +886,9 @@ export type Alliance = {
   /** What PhineTech and Tari Africa do with it. */
   role: string;
   capabilities: string[];
-  url: string;
-  urlLabel: string;
+  /** Partner website; leave out when none has been supplied. */
+  url?: string;
+  urlLabel?: string;
 };
 
 export const alliances: Alliance[] = [
@@ -927,6 +931,23 @@ export const alliances: Alliance[] = [
     ],
     url: "https://octagram.eu/catalog/",
     urlLabel: "octagram.eu",
+  },
+  {
+    slug: "vintech",
+    name: "VinTech",
+    relationship: "IoT partner",
+    location: "Partner of PhineTech",
+    summary:
+      "IoT services and IoT training: connected devices and sensors in the field, and the hands-on skills to install, run and maintain them.",
+    body: "VinTech provides IoT services and IoT training. Its services cover the connected-device side of a project: sensors, gateways and the devices that measure, monitor and control things in the field. Its training builds the practical skills to design, install and look after those systems, so that the people who will run a deployment can also keep it running.",
+    role: "We partner with VinTech on joint IoT deployments, where VinTech brings the devices and field work and we build the platforms, dashboards and integrations the data feeds into, and on IoT training for client teams and young engineers.",
+    capabilities: [
+      "IoT services",
+      "IoT training",
+      "Sensors and devices",
+      "Joint IoT deployments",
+      "Skills for young engineers",
+    ],
   },
 ];
 

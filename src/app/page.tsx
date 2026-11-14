@@ -490,18 +490,21 @@ export default function Home() {
 
         {/* =============================== alliances =========================== */}
         <Cell
-          className="min-h-[300px] lg:col-span-4"
+          className="min-h-[260px] lg:col-span-12"
           photo={imagery.alliance}
           href="/partners#alliances"
-          hud={{ tl: <>Alliances</>, tr: <>Via Tari Africa</> }}
+          hud={{
+            tl: <>Alliances</>,
+            tr: <>{pad(alliances.length)} technology partners</>,
+          }}
         >
-          <div className="mt-auto">
+          <div className="mt-auto max-w-2xl">
             <h2 className="text-2xl leading-tight font-bold tracking-tight sm:text-3xl">
-              The networks and buildings a smart city stands on
+              The networks, buildings and devices a smart city stands on
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Technology partnerships held under Tari Africa, bringing
-              connectivity and building systems to what we build.
+              Technology partnerships that bring connectivity, building
+              systems, and IoT services and training to what we build.
             </p>
           </div>
         </Cell>
@@ -512,7 +515,11 @@ export default function Home() {
             href={a.url}
             delay={i * 90}
             variant="grid"
-            className="min-h-[300px] sm:col-span-6 lg:col-span-4"
+            className={`min-h-[300px] lg:col-span-4 ${
+              alliances.length % 2 === 1 && i === alliances.length - 1
+                ? "sm:col-span-12"
+                : "sm:col-span-6"
+            }`}
             hud={{ tl: <>{a.relationship}</>, tr: <>{a.location}</> }}
           >
             <p className="lockup mt-8 text-3xl">{a.name}</p>
